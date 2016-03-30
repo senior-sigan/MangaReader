@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/manga_item_cover"
+            android:scaleType="centerCrop"
+            android:layout_width="@dimen/manga_cover_width"
+            android:layout_height="@dimen/manga_cover_height"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/manga_item_cover"
+            android:layout_toRightOf="@+id/manga_item_cover">
+            <TextView
+                android:id="@+id/manga_item_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Super duper manga!" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

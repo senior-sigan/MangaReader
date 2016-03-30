@@ -3,7 +3,7 @@ package org.seniorsigan.mangareader
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import org.seniorsigan.mangareader.usecases.ReadmangaParser
+import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaParser
 
 class ShareParserActivity: AppCompatActivity() {
     val parser = ReadmangaParser()

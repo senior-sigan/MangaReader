@@ -1,4 +1,4 @@
-package org.seniorsigan.mangareader.usecases
+package org.seniorsigan.mangareader.usecases.readmanga
 
 import android.util.Log
 import okhttp3.*

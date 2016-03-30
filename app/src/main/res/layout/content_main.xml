@@ -12,8 +12,10 @@
     tools:context="org.seniorsigan.mangareader.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="org.seniorsigan.mangareader.ui.fragments.MangaListFragment"
+        tools:layout="@layout/fragment_manga_list"
+        android:id="@+id/fragment_history_list" />
 </RelativeLayout>
