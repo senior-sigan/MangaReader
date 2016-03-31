@@ -1,7 +1,6 @@
 package org.seniorsigan.mangareader.ui.fragments
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -15,42 +14,45 @@ import org.jetbrains.anko.support.v4.onRefresh
 import org.jetbrains.anko.support.v4.onUiThread
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.R
+import org.seniorsigan.mangareader.ShareParserActivity
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
-import org.seniorsigan.mangareader.adapters.Manga2ViewHolder
+import org.seniorsigan.mangareader.adapters.ChapterViewHolder
 
-class MangaListFragment : Fragment() {
+class ChapterListFragment : Fragment() {
     private lateinit var refresh: SwipeRefreshLayout
     private lateinit var listView: RecyclerView
-    private val adapter = ArrayListAdapter(Manga2ViewHolder::class.java, R.layout.manga_item)
+    private val adapter = ArrayListAdapter(ChapterViewHolder::class.java, R.layout.chapter_item)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_manga_list, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_chapter_list, container, false)
         with(rootView, {
-            refresh = find<SwipeRefreshLayout>(R.id.refresh_manga_list)
-            listView = find<RecyclerView>(R.id.rv_manga_list)
+            refresh = find<SwipeRefreshLayout>(R.id.refresh_chapter_list)
+            listView = find<RecyclerView>(R.id.rv_chapter_list)
         })
+        val url = "http://readmanga.me/naruto"
 
         listView.layoutManager = LinearLayoutManager(context)
-        adapter.onItemClickListener = {manga ->
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(manga.url))
-            startActivity(browserIntent)
+        adapter.onItemClickListener = { chapter ->
+            startActivity(with(Intent(context, ShareParserActivity::class.java), {
+                putExtra(android.content.Intent.EXTRA_TEXT, chapter.url)
+            }))
         }
         listView.adapter = adapter
         refresh.onRefresh {
-            renderList()
+            renderList(url)
         }
-        renderList()
+        renderList(url)
 
         return rootView
     }
 
-    fun renderList() {
+    fun renderList(url: String) {
         refresh.isRefreshing = true
-        App.search.search { list ->
+        App.chaptersRepository.findAll(url, { list ->
             onUiThread {
                 adapter.insert(list)
                 refresh.isRefreshing = false
             }
-        }
+        })
     }
 }

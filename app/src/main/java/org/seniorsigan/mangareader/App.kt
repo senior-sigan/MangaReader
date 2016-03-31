@@ -2,6 +2,7 @@ package org.seniorsigan.mangareader
 
 import android.app.Application
 import okhttp3.OkHttpClient
+import org.seniorsigan.mangareader.usecases.readmanga.ChaptersRepository
 import org.seniorsigan.mangareader.usecases.readmanga.PopularSearch
 
 const val TAG = "MangaReader"
@@ -11,5 +12,6 @@ class App: Application() {
     companion object {
         val client = OkHttpClient()
         val search = PopularSearch()
+        val chaptersRepository = ChaptersRepository()
     }
 }

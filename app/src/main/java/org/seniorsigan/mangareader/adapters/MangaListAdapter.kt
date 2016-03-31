@@ -52,3 +52,20 @@ class MangaViewHolder(val view: View, private val onItemClickListener: ((MangaIt
         }
     }
 }
+
+class Manga2ViewHolder(
+        view: View,
+        val onItemClickListener: ((MangaItem) -> Unit)?
+) : BaseItemHolder<MangaItem>(view, onItemClickListener) {
+    val title = view.find<TextView>(R.id.manga_item_title)
+    val cover = view.find<ImageView>(R.id.manga_item_cover)
+    val context = view.context
+
+    override fun setItem(item: MangaItem) {
+        title.text = item.title
+        Picasso.with(context).load(item.coverURL).into(cover)
+        itemView.onClick {
+            onItemClickListener?.invoke(item)
+        }
+    }
+}

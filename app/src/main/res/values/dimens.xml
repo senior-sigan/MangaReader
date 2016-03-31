@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="manga_cover_width">64dp</dimen>
     <dimen name="manga_cover_height">64dp</dimen>
+    <dimen name="chapter_item_height">48dp</dimen>
 </resources>

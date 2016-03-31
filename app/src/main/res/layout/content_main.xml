@@ -15,7 +15,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="org.seniorsigan.mangareader.ui.fragments.MangaListFragment"
+        android:name="org.seniorsigan.mangareader.ui.fragments.ChapterListFragment"
         tools:layout="@layout/fragment_manga_list"
         android:id="@+id/fragment_history_list" />
 </RelativeLayout>
