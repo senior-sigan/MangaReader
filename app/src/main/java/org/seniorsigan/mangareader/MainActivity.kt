@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import org.jetbrains.anko.find
+import org.seniorsigan.mangareader.ui.fragments.ChapterListFragment
+import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +26,20 @@ class MainActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_TEXT, url)
             }))
         }
+
+        val mangaListFragment = MangaListFragment()
+        mangaListFragment.arguments = intent.extras
+        mangaListFragment.onItemClickListener = { manga ->
+            val chaptersFragment = ChapterListFragment()
+            val args = Bundle()
+            args.putString(ChapterListFragment.urlArgument, manga.url)
+            chaptersFragment.arguments = args
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragments_container, chaptersFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+        supportFragmentManager.beginTransaction().add(R.id.fragments_container, mangaListFragment).commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

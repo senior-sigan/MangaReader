@@ -11,7 +11,7 @@ class ArrayListAdapter<Item: BaseItem, ItemHolder: BaseItemHolder<Item>>(
         private val itemLayout: Int
 ): RecyclerView.Adapter<ItemHolder>() {
     private val collection: MutableList<Item> = arrayListOf()
-    var onItemClickListener: ((Item) -> Unit)? = null
+    var onItemClickListener: ((Item) -> Unit) = {}
 
     fun insert(models: List<Item>) {
         collection.addAll(models)
@@ -30,14 +30,17 @@ class ArrayListAdapter<Item: BaseItem, ItemHolder: BaseItemHolder<Item>>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder? {
         val view = parent.context.layoutInflater.inflate(itemLayout, parent, false)
-        return itemHolderClass.constructors[0].newInstance(view, onItemClickListener) as ItemHolder
+        val holder = itemHolderClass.getDeclaredConstructor(View::class.java).newInstance(view)
+        holder.onItemClickListener = onItemClickListener
+        return holder
     }
 
     override fun getItemCount(): Int = collection.size
 }
 
 abstract class BaseItemHolder<Item: BaseItem>(
-        val view: View, private val onItemClickListener: ((Item) -> Unit)?
+        val view: View
 ) : RecyclerView.ViewHolder(view) {
+    var onItemClickListener: ((Item) -> Unit) = {}
     abstract fun setItem(item: Item)
 }

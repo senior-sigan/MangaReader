@@ -16,12 +16,15 @@ import org.jetbrains.anko.support.v4.onUiThread
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
-import org.seniorsigan.mangareader.adapters.Manga2ViewHolder
+import org.seniorsigan.mangareader.adapters.MangaViewHolder
+import org.seniorsigan.mangareader.models.MangaItem
 
 class MangaListFragment : Fragment() {
     private lateinit var refresh: SwipeRefreshLayout
     private lateinit var listView: RecyclerView
-    private val adapter = ArrayListAdapter(Manga2ViewHolder::class.java, R.layout.manga_item)
+    private val adapter = ArrayListAdapter(MangaViewHolder::class.java, R.layout.manga_item)
+
+    var onItemClickListener: (MangaItem) -> Unit = {}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_manga_list, container, false)
@@ -31,10 +34,7 @@ class MangaListFragment : Fragment() {
         })
 
         listView.layoutManager = LinearLayoutManager(context)
-        adapter.onItemClickListener = {manga ->
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(manga.url))
-            startActivity(browserIntent)
-        }
+        adapter.onItemClickListener = onItemClickListener
         listView.adapter = adapter
         refresh.onRefresh {
             renderList()

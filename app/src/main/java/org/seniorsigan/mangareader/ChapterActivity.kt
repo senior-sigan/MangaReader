@@ -14,11 +14,6 @@ class ChapterActivity : AppCompatActivity() {
 
         val view = find<ViewPager>(R.id.chapter_view)
         val pages = intent.getStringArrayExtra(SHARED_URL).toList().filterNotNull()
-        Log.d(TAG, "pages: $pages")
         view.adapter = ImagePageAdapter(pages, applicationContext)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }

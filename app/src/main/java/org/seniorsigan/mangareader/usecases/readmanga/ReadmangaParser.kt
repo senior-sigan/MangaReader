@@ -1,5 +1,6 @@
 package org.seniorsigan.mangareader.usecases.readmanga
 
+import android.net.Uri
 import android.util.Log
 import okhttp3.*
 import org.json.JSONArray
@@ -12,7 +13,8 @@ class ReadmangaParser {
     private val regexp = "\\[\\[(.*?)\\]\\]"
 
     fun extractPages(url: String, callback: (List<String>) -> Unit) {
-        val req = Request.Builder().url(url).build()
+        val uri = Uri.parse(url).buildUpon().appendQueryParameter("mature", "1")
+        val req = Request.Builder().url(uri.toString()).build()
         App.client.newCall(req).enqueue(object : Callback {
             override fun onFailure(call: Call?, e: IOException?) {
                 Log.e(TAG, "Can't finish request to $url: $e")
