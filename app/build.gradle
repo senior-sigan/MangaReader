@@ -32,7 +32,6 @@ android {
 ext {
     anko_version = '0.8.2'
     support_version = '23.2.1'
-    eventbus_version = '3.0.0'
     okhttp_version = '3.2.0'
     picasso_version = '2.5.2'
     photoview_version = '1.2.5'

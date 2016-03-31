@@ -3,7 +3,6 @@ package org.seniorsigan.mangareader
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import org.jetbrains.anko.find
 import org.seniorsigan.mangareader.adapters.ImagePageAdapter
 

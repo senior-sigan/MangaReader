@@ -74,6 +74,7 @@ class ChapterListFragment : Fragment() {
 
         refresh.isRefreshing = true
         App.chaptersRepository.findAll(url, { list ->
+            if (activity == null) return@findAll
             onUiThread {
                 adapter.insert(list)
                 refresh.isRefreshing = false
