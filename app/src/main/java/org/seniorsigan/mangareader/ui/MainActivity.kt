@@ -7,30 +7,33 @@ import android.view.Menu
 import android.view.MenuItem
 import org.jetbrains.anko.find
 import org.seniorsigan.mangareader.R
+import org.seniorsigan.mangareader.models.MangaItem
 import org.seniorsigan.mangareader.ui.fragments.ChapterListFragment
 import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(), MangaListFragment.OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar = find<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val mangaListFragment = MangaListFragment()
-        mangaListFragment.arguments = intent.extras
-        mangaListFragment.onItemClickListener = { manga ->
-            val chaptersFragment = ChapterListFragment()
-            val args = Bundle()
-            args.putString(ChapterListFragment.urlArgument, manga.url)
-            chaptersFragment.arguments = args
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragments_container, chaptersFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+        if (savedInstanceState == null) {
+            val mangaListFragment = MangaListFragment()
+            mangaListFragment.arguments = intent.extras
+            supportFragmentManager.beginTransaction().add(R.id.fragments_container, mangaListFragment).commit()
         }
-        supportFragmentManager.beginTransaction().add(R.id.fragments_container, mangaListFragment).commit()
+    }
+
+    override fun onItemClick(item: MangaItem) {
+        val chaptersFragment = ChapterListFragment()
+        val args = Bundle()
+        args.putString(ChapterListFragment.urlArgument, item.url)
+        chaptersFragment.arguments = args
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragments_container, chaptersFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

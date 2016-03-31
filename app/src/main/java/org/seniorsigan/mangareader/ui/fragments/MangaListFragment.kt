@@ -1,5 +1,6 @@
 package org.seniorsigan.mangareader.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -22,7 +23,16 @@ class MangaListFragment : Fragment() {
     private lateinit var listView: RecyclerView
     private val adapter = ArrayListAdapter(MangaViewHolder::class.java, R.layout.manga_item)
 
-    var onItemClickListener: (MangaItem) -> Unit = {}
+    lateinit var onItemClickListener: OnItemClickListener
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        try {
+            onItemClickListener = activity as OnItemClickListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$activity must implement OnItemClickListener");
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_manga_list, container, false)
@@ -32,7 +42,7 @@ class MangaListFragment : Fragment() {
         })
 
         listView.layoutManager = LinearLayoutManager(context)
-        adapter.onItemClickListener = onItemClickListener
+        adapter.onItemClickListener = { manga -> onItemClickListener.onItemClick(manga) }
         listView.adapter = adapter
         refresh.onRefresh {
             renderList()
@@ -51,5 +61,9 @@ class MangaListFragment : Fragment() {
                 refresh.isRefreshing = false
             }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(item: MangaItem)
     }
 }
