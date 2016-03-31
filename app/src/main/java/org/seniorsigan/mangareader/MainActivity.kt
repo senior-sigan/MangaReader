@@ -1,8 +1,6 @@
 package org.seniorsigan.mangareader
 
-import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -18,14 +16,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val toolbar = find<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-        val fab = find<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener { view ->
-            startActivity(with(Intent(this, ShareParserActivity::class.java), {
-                val url = "http://readmanga.me/fairytail/vol57/479"
-                putExtra(Intent.EXTRA_TEXT, url)
-            }))
-        }
 
         val mangaListFragment = MangaListFragment()
         mangaListFragment.arguments = intent.extras

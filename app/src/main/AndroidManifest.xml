@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/AppTheme.Translucent"
             android:name=".ChapterActivity" />
     </application>
 
