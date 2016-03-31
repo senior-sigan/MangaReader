@@ -15,7 +15,7 @@ import org.jetbrains.anko.support.v4.onRefresh
 import org.jetbrains.anko.support.v4.onUiThread
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.R
-import org.seniorsigan.mangareader.ShareParserActivity
+import org.seniorsigan.mangareader.ui.ShareParserActivity
 import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.ChapterViewHolder

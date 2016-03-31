@@ -1,4 +1,4 @@
-package org.seniorsigan.mangareader
+package org.seniorsigan.mangareader.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import org.jetbrains.anko.find
+import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.ui.fragments.ChapterListFragment
 import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 

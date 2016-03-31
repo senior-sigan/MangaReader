@@ -45,6 +45,7 @@ class MangaListFragment : Fragment() {
     fun renderList() {
         refresh.isRefreshing = true
         App.search.search { list ->
+            if (activity == null) return@search
             onUiThread {
                 adapter.insert(list)
                 refresh.isRefreshing = false

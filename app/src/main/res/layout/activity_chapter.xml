@@ -8,5 +8,5 @@
     android:id="@+id/chapter_view"
     android:fitsSystemWindows="false"
     android:clipToPadding="false"
-    tools:context=".ChapterActivity">
+    tools:context=".ui.ChapterActivity">
 </org.seniorsigan.mangareader.viewpager.ViewPagerFix>

@@ -1,9 +1,11 @@
-package org.seniorsigan.mangareader
+package org.seniorsigan.mangareader.ui
 
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import org.jetbrains.anko.find
+import org.seniorsigan.mangareader.R
+import org.seniorsigan.mangareader.SHARED_URL
 import org.seniorsigan.mangareader.adapters.ImagePageAdapter
 
 class ChapterActivity : AppCompatActivity() {
