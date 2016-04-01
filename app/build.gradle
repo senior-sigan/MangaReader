@@ -1,6 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def gitTag = 'git describe --tags'.execute([], project.rootDir).text.trim()
+def gitCommitCount =
+        Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -9,8 +14,10 @@ android {
         applicationId "org.seniorsigan.mangareader"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode gitCommitCount
+        versionName "${gitCommitCount}"
+        archivesBaseName = "mangareader-${versionCode}"
+        buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
     }
     buildTypes {
         release {
@@ -22,10 +29,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-
-    packagingOptions {
-        pickFirst 'META-INF/services/javax.xml.stream.XMLInputFactory'
-        pickFirst 'META-INF/services/com.fasterxml.jackson.core.ObjectCodec'
+    lintOptions {
+        warning 'InvalidPackage'
     }
 }
 
