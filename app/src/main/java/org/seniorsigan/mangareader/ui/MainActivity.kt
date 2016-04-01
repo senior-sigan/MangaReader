@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), MangaListFragment.OnItemClickListener 
         val id = item.itemId
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_about) {
             return true
         }
 
