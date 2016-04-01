@@ -17,6 +17,7 @@ import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.MangaViewHolder
 import org.seniorsigan.mangareader.models.MangaItem
+import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaSearch
 
 class MangaListFragment : Fragment() {
     private lateinit var refresh: SwipeRefreshLayout
@@ -54,13 +55,13 @@ class MangaListFragment : Fragment() {
 
     fun renderList() {
         refresh.isRefreshing = true
-        App.search.search { list ->
+        App.popularSearch.search(ReadmangaSearch.name, { list ->
             if (activity == null) return@search
             onUiThread {
                 adapter.insert(list)
                 refresh.isRefreshing = false
             }
-        }
+        })
     }
 
     interface OnItemClickListener {
