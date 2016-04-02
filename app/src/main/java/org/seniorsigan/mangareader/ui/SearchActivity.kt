@@ -18,6 +18,7 @@ import org.jetbrains.anko.find
 import org.jetbrains.anko.onUiThread
 import org.jetbrains.anko.searchManager
 import org.seniorsigan.mangareader.App
+import org.seniorsigan.mangareader.INTENT_MANGA_URL
 
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.TAG
@@ -48,6 +49,12 @@ class SearchActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         listView.layoutManager = LinearLayoutManager(applicationContext)
+        adapter.onItemClickListener = { manga ->
+            startActivity(with(Intent(this, MangaActivity::class.java), {
+                putExtra(INTENT_MANGA_URL, manga.url)
+                this
+            }))
+        }
         listView.adapter = adapter
 
         setupSearchView()

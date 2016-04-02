@@ -16,10 +16,10 @@ import org.jetbrains.anko.support.v4.onRefresh
 import org.jetbrains.anko.support.v4.onUiThread
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.R
-import org.seniorsigan.mangareader.ui.ShareParserActivity
 import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.ChapterViewHolder
+import org.seniorsigan.mangareader.ui.ShareParserActivity
 
 class ChapterListFragment : Fragment() {
     private lateinit var refresh: SwipeRefreshLayout
@@ -75,11 +75,8 @@ class ChapterListFragment : Fragment() {
             return
         }
 
-        App.mangaPageParser.parse(url, { manga ->
-            Log.d(TAG, "Manga: $manga")
-        })
-
         App.chaptersRepository.findAll(url, { list ->
+            Log.d(TAG, "Find chapters for $url")
             if (activity == null) return@findAll
             onUiThread {
                 adapter.insert(list)

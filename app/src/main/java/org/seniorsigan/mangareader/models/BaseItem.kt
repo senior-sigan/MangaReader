@@ -1,5 +1,7 @@
 package org.seniorsigan.mangareader.models
 
-interface BaseItem {
+import java.io.Serializable
+
+interface BaseItem: Serializable {
     val _id: Int
 }

@@ -6,6 +6,7 @@ import org.seniorsigan.mangareader.usecases.readmanga.*
 
 const val TAG = "MangaReader"
 const val SHARED_URL = "SHARED_URL_INTENT"
+const val INTENT_MANGA_URL = "INTENT_MANGA_URL"
 
 const val RC_SEARCH = 0
 

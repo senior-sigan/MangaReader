@@ -20,8 +20,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.SearchView" parent="ThemeOverlay.AppCompat.Light">
-    </style>
+    <style name="AppTheme.SearchView" parent="ThemeOverlay.AppCompat.Light"></style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

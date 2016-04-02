@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import org.jetbrains.anko.find
+import org.seniorsigan.mangareader.INTENT_MANGA_URL
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.models.MangaItem
@@ -31,14 +32,10 @@ class MainActivity : AppCompatActivity(), MangaListFragment.OnItemClickListener 
     }
 
     override fun onItemClick(item: MangaItem) {
-        val chaptersFragment = ChapterListFragment()
-        val args = Bundle()
-        args.putString(ChapterListFragment.urlArgument, item.url)
-        chaptersFragment.arguments = args
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragments_container, chaptersFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+        startActivity(with(Intent(this, MangaActivity::class.java), {
+            putExtra(INTENT_MANGA_URL, item.url)
+            this
+        }))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

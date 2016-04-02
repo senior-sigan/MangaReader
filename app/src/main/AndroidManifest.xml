@@ -54,15 +54,22 @@
             android:name=".ui.ChapterActivity"
             android:theme="@style/AppTheme.Translucent" />
         <activity
+            android:name=".ui.SearchActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.Search"
-            android:name=".ui.SearchActivity">
+            android:theme="@style/AppTheme.Search">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
+
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity
+            android:name=".ui.MangaActivity"
+            android:label="@string/title_activity_manga"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.ChaptersActivity"></activity>
     </application>
 
 </manifest>
