@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -32,8 +32,24 @@
 
         <FrameLayout
             android:id="@+id/fragments_container"
+            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:indeterminate="true"
+                android:visibility="gone"
+                android:paddingBottom="@dimen/spacing_huge"
+                android:paddingTop="@dimen/spacing_huge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_manga_list"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|top" />
         </FrameLayout>
     </LinearLayout>
 </FrameLayout>

@@ -18,6 +18,8 @@ class App: Application() {
             register(SelfmangaSearch.name, SelfmangaSearch())
             this
         })
+
+        val querySearch = QuerySearch("http://readmanga.me")
         val chaptersRepository = ChaptersRepository()
     }
 }

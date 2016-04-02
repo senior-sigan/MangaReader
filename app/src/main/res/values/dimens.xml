@@ -7,4 +7,5 @@
     <dimen name="manga_cover_height">80dp</dimen>
     <dimen name="chapter_item_height">48dp</dimen>
     <dimen name="z_app_bar">4dp</dimen>
+    <dimen name="spacing_huge">64dp</dimen>
 </resources>

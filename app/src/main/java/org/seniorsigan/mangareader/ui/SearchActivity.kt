@@ -5,33 +5,50 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.InputType
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.SearchView
 import org.jetbrains.anko.find
+import org.jetbrains.anko.onUiThread
 import org.jetbrains.anko.searchManager
+import org.seniorsigan.mangareader.App
 
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.TAG
+import org.seniorsigan.mangareader.adapters.ArrayListAdapter
+import org.seniorsigan.mangareader.adapters.MangaViewHolder
+import org.seniorsigan.mangareader.models.MangaItem
+import org.seniorsigan.mangareader.ui.fragments.ChapterListFragment
+import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 
 class SearchActivity : AppCompatActivity() {
     lateinit var searchView: SearchView
     lateinit var scrim: View
     lateinit var toolbar: Toolbar
+    lateinit var listView: RecyclerView
+    lateinit var progress: ProgressBar
+    private val adapter = ArrayListAdapter(MangaViewHolder::class.java, R.layout.manga_item)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        listView = find<RecyclerView>(R.id.rv_manga_list)
         searchView = find<SearchView>(R.id.search_view)
         scrim = find<View>(R.id.scrim)
         toolbar = find<Toolbar>(R.id.toolbar)
+        progress = find<ProgressBar>(R.id.progressBar)
         setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        listView.layoutManager = LinearLayoutManager(applicationContext)
+        listView.adapter = adapter
 
         setupSearchView()
     }
@@ -53,16 +70,27 @@ class SearchActivity : AppCompatActivity() {
                 searchView.setQuery(query, false)
                 searchFor(query)
             }
+        } else {
+            clearResults()
         }
     }
 
     private fun clearResults() {
-        //TODO: hide all views and clear adapters
+        progress.visibility = View.GONE
+        adapter.clear()
     }
 
     private fun searchFor(query: String) {
         clearResults()
+        progress.visibility = View.VISIBLE
         searchView.clearFocus()
+        App.querySearch.search(query, { list ->
+            Log.d(TAG, "Found $list")
+            onUiThread {
+                progress.visibility = View.GONE
+                adapter.insert(list)
+            }
+        })
     }
 
     private fun setupSearchView() {

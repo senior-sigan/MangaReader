@@ -23,6 +23,11 @@ class ArrayListAdapter<Item: BaseItem, ItemHolder: BaseItemHolder<Item>>(
         notifyItemInserted(collection.indexOfFirst { it._id == model._id })
     }
 
+    fun clear() {
+        collection.clear()
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         val item = collection.getOrNull(position) ?: return
         holder.setItem(item)
