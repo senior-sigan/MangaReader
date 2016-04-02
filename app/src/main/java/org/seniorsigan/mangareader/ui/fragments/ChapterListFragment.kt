@@ -75,6 +75,10 @@ class ChapterListFragment : Fragment() {
             return
         }
 
+        App.mangaPageParser.parse(url, { manga ->
+            Log.d(TAG, "Manga: $manga")
+        })
+
         App.chaptersRepository.findAll(url, { list ->
             if (activity == null) return@findAll
             onUiThread {
