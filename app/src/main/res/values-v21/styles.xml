@@ -19,7 +19,7 @@
 
     <style name="AppTheme.SearchView" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:searchIcon">@null</item>
-        <item name="android:searchHintIcon">@null</item>
+        <!--<item name="android:searchHintIcon">@null</item>-->
         <item name="android:queryBackground">@null</item>
         <item name="android:submitBackground">@null</item>
     </style>
