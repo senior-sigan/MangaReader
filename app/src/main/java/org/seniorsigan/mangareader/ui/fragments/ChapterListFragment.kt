@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.onRefresh
 import org.jetbrains.anko.support.v4.onUiThread
@@ -23,6 +24,7 @@ import org.seniorsigan.mangareader.adapters.ChapterViewHolder
 class ChapterListFragment : Fragment() {
     private lateinit var refresh: SwipeRefreshLayout
     private lateinit var listView: RecyclerView
+    private lateinit var progressBar: ProgressBar
     private val adapter = ArrayListAdapter(ChapterViewHolder::class.java, R.layout.chapter_item)
     private var currentURL: String? = null
 
@@ -35,6 +37,7 @@ class ChapterListFragment : Fragment() {
         with(rootView, {
             refresh = find<SwipeRefreshLayout>(R.id.refresh_chapter_list)
             listView = find<RecyclerView>(R.id.rv_chapter_list)
+            progressBar = find<ProgressBar>(R.id.progressBar)
         })
         currentURL = savedInstanceState?.getString(urlArgument)
 
@@ -72,12 +75,12 @@ class ChapterListFragment : Fragment() {
             return
         }
 
-        refresh.isRefreshing = true
         App.chaptersRepository.findAll(url, { list ->
             if (activity == null) return@findAll
             onUiThread {
                 adapter.insert(list)
                 refresh.isRefreshing = false
+                progressBar.visibility = View.GONE
             }
         })
     }

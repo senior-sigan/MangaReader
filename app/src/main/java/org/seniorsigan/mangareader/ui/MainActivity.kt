@@ -1,21 +1,26 @@
 package org.seniorsigan.mangareader.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import org.jetbrains.anko.find
 import org.seniorsigan.mangareader.R
+import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.models.MangaItem
 import org.seniorsigan.mangareader.ui.fragments.ChapterListFragment
 import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 
 class MainActivity : AppCompatActivity(), MangaListFragment.OnItemClickListener {
+    lateinit var toolbar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar = find<Toolbar>(R.id.toolbar)
+        toolbar = find<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         if (savedInstanceState == null) {
@@ -50,6 +55,12 @@ class MainActivity : AppCompatActivity(), MangaListFragment.OnItemClickListener 
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_about) {
+            return true
+        }
+
+        if (id == R.id.menu_search) {
+            Log.d(TAG, "Search clicked")
+            startActivity(Intent(this, SearchActivity::class.java))
             return true
         }
 

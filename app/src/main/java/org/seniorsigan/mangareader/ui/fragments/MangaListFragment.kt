@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.onRefresh
 import org.jetbrains.anko.support.v4.onUiThread
@@ -22,6 +23,7 @@ import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaSearch
 class MangaListFragment : Fragment() {
     private lateinit var refresh: SwipeRefreshLayout
     private lateinit var listView: RecyclerView
+    private lateinit var progressBar: ProgressBar
     private val adapter = ArrayListAdapter(MangaViewHolder::class.java, R.layout.manga_item)
 
     lateinit var onItemClickListener: OnItemClickListener
@@ -40,6 +42,7 @@ class MangaListFragment : Fragment() {
         with(rootView, {
             refresh = find<SwipeRefreshLayout>(R.id.refresh_manga_list)
             listView = find<RecyclerView>(R.id.rv_manga_list)
+            progressBar = find<ProgressBar>(R.id.progressBar)
         })
 
         listView.layoutManager = LinearLayoutManager(context)
@@ -54,12 +57,12 @@ class MangaListFragment : Fragment() {
     }
 
     fun renderList() {
-        refresh.isRefreshing = true
         App.popularSearch.search(ReadmangaSearch.name, { list ->
             if (activity == null) return@search
             onUiThread {
                 adapter.insert(list)
                 refresh.isRefreshing = false
+                progressBar.visibility = View.GONE
             }
         })
     }

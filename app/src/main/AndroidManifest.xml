@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="auto"
-    package="org.seniorsigan.mangareader">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.seniorsigan.mangareader"
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -29,27 +28,41 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
-                    android:scheme="http"
-                    android:host="readmanga.me" />
+                    android:host="readmanga.me"
+                    android:scheme="http" />
                 <data
-                    android:scheme="http"
-                    android:host="mintmanga.com" />
+                    android:host="mintmanga.com"
+                    android:scheme="http" />
                 <data
-                    android:scheme="http"
-                    android:host="selfmanga.ru" />
+                    android:host="selfmanga.ru"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/AppTheme.Translucent"
-            android:name=".ui.ChapterActivity" />
+            android:name=".ui.ChapterActivity"
+            android:theme="@style/AppTheme.Translucent" />
+        <activity
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Search"
+            android:name=".ui.SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
     </application>
 
 </manifest>

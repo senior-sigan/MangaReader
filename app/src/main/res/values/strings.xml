@@ -5,4 +5,5 @@
     <string name="search">Search</string>
     <string name="filter">Filter</string>
     <string name="menu_about">About</string>
+    <string name="search_hint">Search Readmanga &amp; Mintmanga></string>
 </resources>

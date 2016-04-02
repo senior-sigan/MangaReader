@@ -7,6 +7,8 @@ import org.seniorsigan.mangareader.usecases.readmanga.*
 const val TAG = "MangaReader"
 const val SHARED_URL = "SHARED_URL_INTENT"
 
+const val RC_SEARCH = 0
+
 class App: Application() {
     companion object {
         val client = OkHttpClient()
