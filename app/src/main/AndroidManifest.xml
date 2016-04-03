@@ -69,7 +69,7 @@
             android:name=".ui.MangaActivity"
             android:label="@string/title_activity_manga"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.ChaptersActivity"></activity>
+        <activity android:name=".ui.ChaptersActivity" />
     </application>
 
 </manifest>

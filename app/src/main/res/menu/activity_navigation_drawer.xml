@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_popular"
+            android:icon="@drawable/ic_whatshot_black_24dp"
+            android:title="Popular" />
+        <item
+            android:id="@+id/nav_bookmarks"
+            android:icon="@drawable/ic_star_black_24dp"
+            android:title="Bookmarks" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="Settings" />
+    </group>
+
+</menu>

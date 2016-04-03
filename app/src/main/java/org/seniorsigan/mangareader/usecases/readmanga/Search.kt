@@ -56,11 +56,16 @@ class QuerySearch(val baseURL: String) {
         val doc = Jsoup.parse(html)
         val elements = doc.select(".tiles .tile")
         return elements.mapIndexed { i, el ->
-            val img = el.select(".img img").first().attr("src")
-            val title = el.select(".desc h3 a").first().text()
-            val url = baseURL + el.select(".desc h3 a").first().attr("href")
-            MangaItem(_id = i, coverURL = img, title = title, url = url)
-        }
+            try {
+                val img = el.select(".img img").first().attr("src")
+                val title = el.select(".desc h3 a").first().text()
+                val url = baseURL + el.select(".desc h3 a").first().attr("href")
+                MangaItem(_id = i, coverURL = img, title = title, url = url)
+            } catch (e: Exception) {
+                Log.d(TAG, "Can't parse element: $e", e)
+                null
+            }
+        }.filterNotNull()
     }
 }
 
