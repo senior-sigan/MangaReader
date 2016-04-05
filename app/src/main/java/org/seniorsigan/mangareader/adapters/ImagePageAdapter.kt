@@ -6,12 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ProgressBar
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import org.jetbrains.anko.find
 import org.seniorsigan.mangareader.R
+import org.seniorsigan.mangareader.ui.widgets.ImageViewFacade
+import org.seniorsigan.mangareader.ui.widgets.ZoomableImageViewFacade
 import uk.co.senab.photoview.PhotoViewAttacher
 
 class ImagePageAdapter(
@@ -43,39 +42,27 @@ class ImageViewItem(
         private val context: Context,
         private val url: String
 ) {
-    private var photoViewAttacher: PhotoViewAttacher? = null
+    val imageView: ImageViewFacade
 
     init {
-        val imageView = view.find<ImageView>(R.id.image_view)
+        imageView = ZoomableImageViewFacade(context).attach(view, R.id.image_view)
         updatePhotoView(url, imageView)
     }
 
     fun dispose() {
-        photoViewAttacher?.cleanup()
-        photoViewAttacher = null
+        imageView.onDestroy()
     }
 
-    private fun updatePhotoView(url: String, imageView: ImageView) {
-        Picasso.with(context)
-                .load(url)
-                .into(imageView, object : Callback {
-                    override fun onSuccess() {
-                        val progressBar = view.find<ProgressBar>(R.id.progressbar)
-                        progressBar.visibility = View.GONE
-                        updateAttach(imageView)
-                    }
+    private fun updatePhotoView(url: String, imageView: ImageViewFacade) {
+        imageView.load(url, object : ImageViewFacade.Callback {
+            override fun onError(e: Throwable?) {
+                Log.e("ImageViewItem", "Can't load image by url $url", e)
+            }
 
-                    override fun onError() {
-                        Log.e("ImageViewItem", "Can't load image by url $url")
-                    }
-                })
-    }
-
-    private fun updateAttach(imageView: ImageView) {
-        if (photoViewAttacher == null) {
-            photoViewAttacher = PhotoViewAttacher(imageView)
-        } else {
-            photoViewAttacher?.update()
-        }
+            override fun onSuccess() {
+                val progressBar = view.find<ProgressBar>(R.id.progressbar)
+                progressBar.visibility = View.GONE
+            }
+        })
     }
 }

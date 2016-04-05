@@ -2,13 +2,11 @@ package org.seniorsigan.mangareader.ui
 
 import android.app.SearchManager
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.text.InputType
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -19,14 +17,10 @@ import org.jetbrains.anko.onUiThread
 import org.jetbrains.anko.searchManager
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.INTENT_MANGA_URL
-
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.MangaViewHolder
-import org.seniorsigan.mangareader.models.MangaItem
-import org.seniorsigan.mangareader.ui.fragments.ChapterListFragment
-import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 
 class SearchActivity : AppCompatActivity() {
     lateinit var searchView: SearchView

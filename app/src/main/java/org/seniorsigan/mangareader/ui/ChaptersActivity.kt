@@ -1,13 +1,10 @@
 package org.seniorsigan.mangareader.ui
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import org.seniorsigan.mangareader.INTENT_MANGA_URL
-
 import org.seniorsigan.mangareader.R
-import org.seniorsigan.mangareader.SHARED_URL
 import org.seniorsigan.mangareader.ui.fragments.ChapterListFragment
-import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 
 class ChaptersActivity : AppCompatActivity() {
 
