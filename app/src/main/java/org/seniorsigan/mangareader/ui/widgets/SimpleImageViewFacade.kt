@@ -59,7 +59,6 @@ class SimpleImageViewFacade(context: Context, imageView: View?) : ImageViewFacad
 
 class ZoomableImageViewFacade(context: Context, imageView: View?) : ImageViewFacade(context, imageView) {
     private val view = imageView as SubsamplingScaleImageView
-    val transport = TransportWithCache(context)
 
     override fun load(url: String?, callback: Callback) {
         if (url == null) {
@@ -67,7 +66,7 @@ class ZoomableImageViewFacade(context: Context, imageView: View?) : ImageViewFac
             return
         }
         context.async() {
-            val uri = transport.load(url)
+            val uri = App.transport.load(url)
             if (uri == null) {
                 callback.onError(null)
             } else {

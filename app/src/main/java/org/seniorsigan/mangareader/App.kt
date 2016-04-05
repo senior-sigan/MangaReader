@@ -25,5 +25,11 @@ class App: Application() {
         val chaptersRepository = ChaptersRepository()
         val mangaPageParser = MangaPageParser()
         val digest = DigestGenerator()
+        lateinit var transport: TransportWithCache
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        transport = TransportWithCache(applicationContext)
     }
 }
