@@ -1,6 +1,7 @@
 package org.seniorsigan.mangareader
 
 import android.app.Application
+import android.util.Log
 import okhttp3.OkHttpClient
 import org.seniorsigan.mangareader.usecases.readmanga.*
 
@@ -23,6 +24,6 @@ class App: Application() {
         val querySearch = QuerySearch("http://readmanga.me")
         val chaptersRepository = ChaptersRepository()
         val mangaPageParser = MangaPageParser()
-        val digest= DigestGenerator()
+        val digest = DigestGenerator()
     }
 }
