@@ -23,5 +23,6 @@ class App: Application() {
         val querySearch = QuerySearch("http://readmanga.me")
         val chaptersRepository = ChaptersRepository()
         val mangaPageParser = MangaPageParser()
+        val digest= DigestGenerator()
     }
 }

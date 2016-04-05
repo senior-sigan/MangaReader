@@ -33,7 +33,7 @@ class MangaActivity : AppCompatActivity() {
         val button = find<Button>(R.id.btn_manga_chapters)
 
         val description = find<TextView>(R.id.manga_description)
-        val coverView = SimpleImageViewFacade(this).attach(this, R.id.manga_cover)
+        val coverView = SimpleImageViewFacade(this, findViewById(R.id.manga_cover))
         val url = intent.getStringExtra(INTENT_MANGA_URL)
         if (url != null && url.isNotEmpty()) {
             App.mangaPageParser.parse(url, { manga ->

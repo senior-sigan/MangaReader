@@ -11,7 +11,6 @@ import org.jetbrains.anko.find
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.ui.widgets.ImageViewFacade
 import org.seniorsigan.mangareader.ui.widgets.ZoomableImageViewFacade
-import uk.co.senab.photoview.PhotoViewAttacher
 
 class ImagePageAdapter(
         val urls: List<String> = emptyList(),
@@ -45,7 +44,7 @@ class ImageViewItem(
     val imageView: ImageViewFacade
 
     init {
-        imageView = ZoomableImageViewFacade(context).attach(view, R.id.image_view)
+        imageView = ZoomableImageViewFacade(context, view.findViewById(R.id.image_view))
         updatePhotoView(url, imageView)
     }
 

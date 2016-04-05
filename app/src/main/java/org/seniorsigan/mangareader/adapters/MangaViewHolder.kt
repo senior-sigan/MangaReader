@@ -13,7 +13,7 @@ class MangaViewHolder(
 ) : BaseItemHolder<MangaItem>(view) {
     val title = view.find<TextView>(R.id.manga_item_title)
     val context = view.context
-    val cover = SimpleImageViewFacade(context).attach(view, R.id.manga_item_cover)
+    val cover = SimpleImageViewFacade(context, view.findViewById(R.id.manga_item_cover))
 
     override fun setItem(item: MangaItem) {
         title.text = item.title

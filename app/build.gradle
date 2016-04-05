@@ -53,7 +53,7 @@ dependencies {
 
     compile "com.squareup.okhttp3:okhttp:$okhttp_version"
     compile "com.squareup.picasso:picasso:$picasso_version"
-    compile "com.commit451:PhotoView:$photoview_version"
+    compile "com.davemorrissey.labs:subsampling-scale-image-view:3.5.0"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.anko:anko-sdk21:$anko_version"

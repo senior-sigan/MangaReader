@@ -1,38 +1,32 @@
 package org.seniorsigan.mangareader.ui.widgets
 
-import android.app.Activity
-import android.app.Fragment
 import android.content.Context
+import android.graphics.PointF
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import com.davemorrissey.labs.subscaleview.ImageSource
+import com.davemorrissey.labs.subscaleview.ImageViewState
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.squareup.picasso.Picasso
-import uk.co.senab.photoview.PhotoViewAttacher
+import okhttp3.Call
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okio.Okio
+import org.jetbrains.anko.onUiThread
+import org.seniorsigan.mangareader.App
+import java.io.File
+import java.io.IOException
 
 abstract class ImageViewFacade(
-        protected val context: Context
+        protected val context: Context,
+        protected val imageView: View?
 ) {
-    protected lateinit var imageView: ImageView
-
-    fun innerView() = imageView
-
-    fun attach(view: View, id: Int): ImageViewFacade {
-        imageView = view.findViewById(id) as ImageView
-        return this
-    }
-
-    fun attach(view: Activity, id: Int): ImageViewFacade {
-        imageView = view.findViewById(id) as ImageView
-        return this
-    }
-
-    fun attach(fragment: Fragment, id: Int): ImageViewFacade {
-        imageView = fragment.view.findViewById(id) as ImageView
-        return this
-    }
 
     open fun onDestroy() {
-        imageView.destroyDrawingCache()
+        imageView?.destroyDrawingCache()
     }
 
     abstract fun load(url: String?, callback: Callback = EmptyCallback())
@@ -48,10 +42,11 @@ abstract class ImageViewFacade(
     }
 }
 
-class SimpleImageViewFacade(context: Context) : ImageViewFacade(context) {
+class SimpleImageViewFacade(context: Context, imageView: View?) : ImageViewFacade(context, imageView) {
+    val view = imageView as ImageView
+
     override fun load(url: String?, callback: Callback) {
-        Log.d("SimpleImageViewFacade", "load $url")
-        Picasso.with(context).load(url).into(imageView, object: com.squareup.picasso.Callback {
+        Picasso.with(context).load(url).into(view, object: com.squareup.picasso.Callback {
             override fun onSuccess() {
                 callback.onSuccess()
             }
@@ -62,33 +57,54 @@ class SimpleImageViewFacade(context: Context) : ImageViewFacade(context) {
     }
 }
 
-class ZoomableImageViewFacade(context: Context): ImageViewFacade(context) {
-    private var photoViewAttacher: PhotoViewAttacher? = null
+class ZoomableImageViewFacade(context: Context, imageView: View?) : ImageViewFacade(context, imageView) {
+    private val MANGA_CACHE = "manga-cache"
+    private val view = imageView as SubsamplingScaleImageView
 
     override fun load(url: String?, callback: Callback) {
-        Log.d("ZoomableImageViewFacade", "load $url")
-        Picasso.with(context).load(url).into(imageView, object: com.squareup.picasso.Callback {
-            override fun onSuccess() {
-                updateAttach(imageView)
-                callback.onSuccess()
+        if (url == null) {
+            callback.onError(null)
+            return
+        }
+        val client = OkHttpClient()
+        val req = Request.Builder().url(url).build()
+        client.newCall(req).enqueue(object: okhttp3.Callback {
+            override fun onFailure(call: Call?, e: IOException?) {
+                callback.onError(e)
             }
-            override fun onError() {
-                callback.onError(null)
+
+            override fun onResponse(call: Call?, response: Response?) {
+                if (response == null) return
+                val body = response.body()
+                val file = File(createDefaultCacheDir(), generateName(url, body.contentType().subtype()))
+                Log.d("Zoom", "Will save file into ${file.absolutePath}")
+                val source = body.source()
+                val sink = Okio.sink(file)
+                source.readAll(sink)
+                source.close()
+                sink.close()
+                context.onUiThread {
+                    try {
+                        view.setImage(ImageSource.uri(Uri.fromFile(file)), ImageViewState(0f, PointF(0f, 0f), 0))
+                        callback.onSuccess()
+                    } catch (e: Exception) {
+                        Log.w("Zoom", "UPS $e", e)
+                    }
+                }
             }
         })
     }
 
-    private fun updateAttach(imageView: ImageView) {
-        if (photoViewAttacher == null) {
-            photoViewAttacher = PhotoViewAttacher(imageView)
-        } else {
-            photoViewAttacher?.update()
+    fun createDefaultCacheDir(): File {
+        val cache = File(context.applicationContext.cacheDir, MANGA_CACHE)
+        if (!cache.exists()) {
+            cache.mkdirs()
         }
+        return cache
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        photoViewAttacher?.cleanup()
-        photoViewAttacher = null
+    private fun generateName(url: String, subtype: String?): String {
+        val name = App.digest.digest(url)
+        return "$name.$subtype"
     }
 }
