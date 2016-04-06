@@ -26,7 +26,7 @@ class App: Application() {
         private val gsonBuilder = GsonBuilder()
         private val gson = gsonBuilder.create()
         lateinit var transport: TransportWithCache
-        lateinit var bookmarksRepository: BookmarksRepository
+        lateinit var bookmarkManager: BookmarksManager
 
         fun toJson(data: Any?): String {
             return gson.toJson(data)
@@ -45,12 +45,13 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         transport = TransportWithCache(applicationContext)
-        bookmarksRepository = BookmarksRepository(applicationContext)
+        val bookmarksRepository = BookmarksRepository(applicationContext)
+        bookmarkManager = BookmarksManager(chaptersRepository, bookmarksRepository)
         searchController = with(SearchController(), {
             register(ReadmangaSearch.name, ReadmangaSearch())
             register(MintmangaSearch.name, MintmangaSearch())
             register(SelfmangaSearch.name, SelfmangaSearch())
-            register(BookmarksSearch.name, BookmarksSearch(bookmarksRepository))
+            register(BookmarksSearch.name, BookmarksSearch(bookmarkManager))
             this
         })
     }

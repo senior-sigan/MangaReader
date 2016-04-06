@@ -50,7 +50,7 @@ class MangaActivity : AppCompatActivity() {
                         }))
                     }
                     fab.onClick { view ->
-                        App.bookmarksRepository.save(manga)
+                        App.bookmarkManager.save(manga)
                         Snackbar.make(view!!, "${manga.title} saved in bookmarks", Snackbar.LENGTH_LONG).setAction("Action", null).show()
                     }
                 }

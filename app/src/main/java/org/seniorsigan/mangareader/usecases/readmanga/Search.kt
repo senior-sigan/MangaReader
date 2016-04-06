@@ -33,13 +33,13 @@ class SearchController {
     fun engineNames(): List<String> = engines.keys.toList()
 }
 
-class BookmarksSearch(private val bookmarksRepository: BookmarksRepository): Search {
+class BookmarksSearch(private val bookmarksManager: BookmarksManager): Search {
     companion object {
         val name = "bookmarks"
     }
 
     override fun search(callback: (List<MangaItem>) -> Unit) {
-        callback(bookmarksRepository.findAll())
+        callback(bookmarksManager.findAllManga())
     }
 }
 
