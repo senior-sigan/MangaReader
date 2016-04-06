@@ -28,7 +28,6 @@ class MangaActivity : AppCompatActivity() {
         val collapsingToolbar = find<CollapsingToolbarLayout>(R.id.toolbar_layout)
 
         val fab = find<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener({ view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() })
 
         val button = find<Button>(R.id.btn_manga_chapters)
 
@@ -50,9 +49,12 @@ class MangaActivity : AppCompatActivity() {
                             this
                         }))
                     }
+                    fab.onClick { view ->
+                        App.bookmarksRepository.save(manga)
+                        Snackbar.make(view!!, "${manga.title} saved in bookmarks", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+                    }
                 }
             })
         }
-
     }
 }

@@ -12,10 +12,15 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import org.jetbrains.anko.find
+import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.INTENT_MANGA_URL
 import org.seniorsigan.mangareader.R
+import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.models.MangaItem
+import org.seniorsigan.mangareader.ui.fragments.ChapterListFragment
 import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
+import org.seniorsigan.mangareader.usecases.readmanga.BookmarksSearch
+import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaSearch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MangaListFragment.OnItemClickListener {
     override fun onItemClick(item: MangaItem) {
@@ -74,15 +79,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @SuppressWarnings("StatementWithEmptyBody")
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
+        var searchEngine: String? = null
 
         val fragmentClass = when (id) {
-            R.id.nav_popular -> MangaListFragment::class
-            R.id.nav_bookmarks -> MangaListFragment::class
+            R.id.nav_popular -> {
+                searchEngine = ReadmangaSearch.name
+                MangaListFragment::class
+            }
+            R.id.nav_bookmarks -> {
+                searchEngine = BookmarksSearch.name
+                MangaListFragment::class
+            }
             R.id.nav_settings -> MangaListFragment::class
             else -> MangaListFragment::class
         }
 
         val fragment = fragmentClass.java.newInstance()
+        fragment.arguments = Bundle()
+        fragment.arguments.putString(MangaListFragment.searchArgument, searchEngine)
         supportFragmentManager.beginTransaction().replace(R.id.fragments_container, fragment).commit()
         item.isChecked = true
         title = item.title

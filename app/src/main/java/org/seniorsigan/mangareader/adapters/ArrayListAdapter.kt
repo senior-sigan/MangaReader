@@ -18,6 +18,14 @@ class ArrayListAdapter<Item: BaseItem, ItemHolder: BaseItemHolder<Item>>(
         notifyDataSetChanged()
     }
 
+    fun update(models: List<Item>) {
+        synchronized(collection, {
+            collection.clear()
+            collection.addAll(models)
+            notifyDataSetChanged()
+        })
+    }
+
     fun insert(model: Item) {
         collection.add(model)
         notifyItemInserted(collection.indexOfFirst { it._id == model._id })

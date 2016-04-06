@@ -17,12 +17,7 @@ const val RC_SEARCH = 0
 class App: Application() {
     companion object {
         val client = OkHttpClient()
-        val popularSearch = with(SearchController(), {
-            register(ReadmangaSearch.name, ReadmangaSearch())
-            register(MintmangaSearch.name, MintmangaSearch())
-            register(SelfmangaSearch.name, SelfmangaSearch())
-            this
-        })
+        lateinit var searchController: SearchController
 
         val querySearch = QuerySearch("http://readmanga.me")
         val chaptersRepository = ChaptersRepository()
@@ -51,5 +46,12 @@ class App: Application() {
         super.onCreate()
         transport = TransportWithCache(applicationContext)
         bookmarksRepository = BookmarksRepository(applicationContext)
+        searchController = with(SearchController(), {
+            register(ReadmangaSearch.name, ReadmangaSearch())
+            register(MintmangaSearch.name, MintmangaSearch())
+            register(SelfmangaSearch.name, SelfmangaSearch())
+            register(BookmarksSearch.name, BookmarksSearch(bookmarksRepository))
+            this
+        })
     }
 }

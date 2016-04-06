@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import org.jetbrains.anko.support.v4.onRefresh
 import org.jetbrains.anko.support.v4.onUiThread
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.R
+import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.MangaViewHolder
 import org.seniorsigan.mangareader.models.MangaItem
@@ -25,6 +27,7 @@ class MangaListFragment : Fragment() {
     private lateinit var listView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private val adapter = ArrayListAdapter(MangaViewHolder::class.java, R.layout.manga_item)
+    private var currentEngine: String? = null
 
     lateinit var onItemClickListener: OnItemClickListener
 
@@ -44,30 +47,49 @@ class MangaListFragment : Fragment() {
             listView = find<RecyclerView>(R.id.rv_manga_list)
             progressBar = find<ProgressBar>(R.id.progressBar)
         })
+        currentEngine = savedInstanceState?.getString(searchArgument)
 
         listView.layoutManager = LinearLayoutManager(context)
         adapter.onItemClickListener = { manga -> onItemClickListener.onItemClick(manga) }
         listView.adapter = adapter
-        refresh.onRefresh {
-            renderList()
-        }
-        renderList()
 
         return rootView
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (arguments != null) {
+            currentEngine = arguments.getString(searchArgument)
+        }
+        refresh.onRefresh {
+            renderList()
+        }
+        renderList()
+    }
+
     fun renderList() {
-        App.popularSearch.search(ReadmangaSearch.name, { list ->
-            if (activity == null) return@search
-            onUiThread {
-                adapter.insert(list)
-                refresh.isRefreshing = false
-                progressBar.visibility = View.GONE
-            }
-        })
+        if (currentEngine != null) {
+            App.searchController.search(currentEngine!!, { list ->
+                if (activity == null) return@search
+                Log.d(TAG, "Bookmarks $list")
+                onUiThread {
+                    adapter.update(list)
+                    refresh.isRefreshing = false
+                    progressBar.visibility = View.GONE
+                }
+            })
+        } else {
+            refresh.isRefreshing = false
+            progressBar.visibility = View.GONE
+            Log.d(TAG, "Nothing to draw because engine wasn't selected")
+        }
     }
 
     interface OnItemClickListener {
         fun onItemClick(item: MangaItem)
+    }
+
+    companion object {
+        val searchArgument = "SEARCH_ENGINE_ARGUMENT"
     }
 }

@@ -5,6 +5,7 @@ import okhttp3.*
 import org.jsoup.Jsoup
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.TAG
+import org.seniorsigan.mangareader.data.BookmarksRepository
 import org.seniorsigan.mangareader.models.MangaItem
 import java.io.IOException
 
@@ -30,6 +31,16 @@ class SearchController {
     }
 
     fun engineNames(): List<String> = engines.keys.toList()
+}
+
+class BookmarksSearch(private val bookmarksRepository: BookmarksRepository): Search {
+    companion object {
+        val name = "bookmarks"
+    }
+
+    override fun search(callback: (List<MangaItem>) -> Unit) {
+        callback(bookmarksRepository.findAll())
+    }
 }
 
 class QuerySearch(val baseURL: String) {
