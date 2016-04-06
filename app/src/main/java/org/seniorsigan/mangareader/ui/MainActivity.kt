@@ -12,20 +12,17 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import org.jetbrains.anko.find
-import org.seniorsigan.mangareader.App
-import org.seniorsigan.mangareader.INTENT_MANGA_URL
+import org.seniorsigan.mangareader.INTENT_MANGA
 import org.seniorsigan.mangareader.R
-import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.models.MangaItem
-import org.seniorsigan.mangareader.ui.fragments.ChapterListFragment
 import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
-import org.seniorsigan.mangareader.usecases.readmanga.BookmarksSearch
+import org.seniorsigan.mangareader.usecases.BookmarksSearch
 import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaSearch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MangaListFragment.OnItemClickListener {
     override fun onItemClick(item: MangaItem) {
         startActivity(with(Intent(this, MangaActivity::class.java), {
-            putExtra(INTENT_MANGA_URL, item.url)
+            putExtra(INTENT_MANGA, item)
             this
         }))
     }

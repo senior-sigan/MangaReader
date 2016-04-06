@@ -1,9 +1,8 @@
-package org.seniorsigan.mangareader.data
+package org.seniorsigan.mangareader.data.cache
 
 import android.content.Context
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.models.BookmarkItem
-import org.seniorsigan.mangareader.models.MangaItem
 
 class BookmarksRepository(val context: Context) {
     val storage = context.getSharedPreferences("Bookmarks", 0)

@@ -2,22 +2,27 @@ package org.seniorsigan.mangareader
 
 import android.app.Application
 import android.util.Log
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
-import org.seniorsigan.mangareader.data.BookmarksRepository
+import org.seniorsigan.mangareader.data.MangaSearchController
+import org.seniorsigan.mangareader.data.MangaSearchRepositoryImpl
+import org.seniorsigan.mangareader.data.cache.BookmarksRepository
+import org.seniorsigan.mangareader.data.cache.MangaCacheRepository
+import org.seniorsigan.mangareader.data.network.MangaNetworkRepository
+import org.seniorsigan.mangareader.data.network.ReadmangaMangaApiConverter
+import org.seniorsigan.mangareader.usecases.*
 import org.seniorsigan.mangareader.usecases.readmanga.*
 
 const val TAG = "MangaReader"
 const val SHARED_URL = "SHARED_URL_INTENT"
-const val INTENT_MANGA_URL = "INTENT_MANGA_URL"
-
-const val RC_SEARCH = 0
+const val INTENT_MANGA = "INTENT_MANGA"
 
 class App: Application() {
     companion object {
         val client = OkHttpClient()
         lateinit var searchController: SearchController
+
+        val mangaSearchController = MangaSearchController()
 
         val querySearch = QuerySearch("http://readmanga.me")
         val chaptersRepository = ChaptersRepository()
@@ -27,6 +32,7 @@ class App: Application() {
         private val gson = gsonBuilder.create()
         lateinit var transport: TransportWithCache
         lateinit var bookmarkManager: BookmarksManager
+        private val readmangaConverter = ReadmangaMangaApiConverter()
 
         fun toJson(data: Any?): String {
             return gson.toJson(data)
@@ -54,5 +60,32 @@ class App: Application() {
             register(BookmarksSearch.name, BookmarksSearch(bookmarkManager))
             this
         })
+
+        mangaSearchController.register(
+                "readmanga",
+                MangaSearchRepositoryImpl(
+                        MangaCacheRepository("ReadmangaCache", applicationContext),
+                        MangaNetworkRepository(
+                                "http://readmanga.me/list?sortType=rate",
+                                applicationContext,
+                                readmangaConverter)))
+
+        mangaSearchController.register(
+                "mintmanga",
+                MangaSearchRepositoryImpl(
+                        MangaCacheRepository("MintmangaCache", applicationContext),
+                        MangaNetworkRepository(
+                                "http://mintmanga.com/list?sortType=rate",
+                                applicationContext,
+                                readmangaConverter)))
+
+        mangaSearchController.register(
+                "selfmanga",
+                MangaSearchRepositoryImpl(
+                        MangaCacheRepository("SelfmangaCache", applicationContext),
+                        MangaNetworkRepository(
+                                "http://selfmanga.ru/list?sortType=rate",
+                                applicationContext,
+                                readmangaConverter)))
     }
 }

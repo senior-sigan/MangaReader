@@ -42,7 +42,7 @@ class ReadmangaParser {
                     }
                 })
 
-                callback(pages.map { it. uri })
+                callback(pages.map { it.uri })
             }
         })
     }

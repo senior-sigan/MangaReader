@@ -5,43 +5,9 @@ import okhttp3.*
 import org.jsoup.Jsoup
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.TAG
-import org.seniorsigan.mangareader.data.BookmarksRepository
 import org.seniorsigan.mangareader.models.MangaItem
+import org.seniorsigan.mangareader.usecases.Search
 import java.io.IOException
-
-interface Search {
-    fun search(callback: (List<MangaItem>) -> Unit)
-}
-
-class SearchController {
-    private val engines: MutableMap<String, Search> = hashMapOf()
-
-    fun search(engineName: String, callback: (List<MangaItem>) -> Unit) {
-        engines[engineName]?.search(callback)
-    }
-
-    fun register(name: String, search: Search): SearchController {
-        engines.put(name, search)
-        return this
-    }
-
-    fun unregister(name: String): SearchController {
-        engines.remove(name)
-        return this
-    }
-
-    fun engineNames(): List<String> = engines.keys.toList()
-}
-
-class BookmarksSearch(private val bookmarksManager: BookmarksManager): Search {
-    companion object {
-        val name = "bookmarks"
-    }
-
-    override fun search(callback: (List<MangaItem>) -> Unit) {
-        callback(bookmarksManager.findAllManga())
-    }
-}
 
 class QuerySearch(val baseURL: String) {
     val searchURL = "$baseURL/search"

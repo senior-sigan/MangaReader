@@ -1,4 +1,4 @@
-package org.seniorsigan.mangareader.usecases.readmanga
+package org.seniorsigan.mangareader.usecases
 
 import android.content.Context
 import android.net.Uri

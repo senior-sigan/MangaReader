@@ -20,7 +20,6 @@ import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.MangaViewHolder
 import org.seniorsigan.mangareader.models.MangaItem
-import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaSearch
 
 class MangaListFragment : Fragment() {
     private lateinit var refresh: SwipeRefreshLayout

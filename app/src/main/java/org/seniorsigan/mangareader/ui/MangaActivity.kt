@@ -14,9 +14,10 @@ import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.onUiThread
 import org.seniorsigan.mangareader.App
-import org.seniorsigan.mangareader.INTENT_MANGA_URL
+import org.seniorsigan.mangareader.INTENT_MANGA
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.TAG
+import org.seniorsigan.mangareader.models.MangaItem
 import org.seniorsigan.mangareader.ui.widgets.SimpleImageViewFacade
 
 class MangaActivity : AppCompatActivity() {
@@ -33,9 +34,9 @@ class MangaActivity : AppCompatActivity() {
 
         val description = find<TextView>(R.id.manga_description)
         val coverView = SimpleImageViewFacade(this, findViewById(R.id.manga_cover))
-        val url = intent.getStringExtra(INTENT_MANGA_URL)
-        if (url != null && url.isNotEmpty()) {
-            App.mangaPageParser.parse(url, { manga ->
+        val mangaIntent = intent.getSerializableExtra(INTENT_MANGA) as MangaItem?
+        if (mangaIntent != null) {
+            App.mangaPageParser.parse(mangaIntent.url, { manga ->
                 Log.d(TAG, "MangaActivity $manga")
                 onUiThread {
                     if (manga == null) return@onUiThread
@@ -45,7 +46,7 @@ class MangaActivity : AppCompatActivity() {
                     coverView.load(manga.coverURL)
                     button.onClick {
                         startActivity(with(Intent(this, ChaptersActivity::class.java), {
-                            putExtra(INTENT_MANGA_URL, manga.url)
+                            putExtra(INTENT_MANGA, manga)
                             this
                         }))
                     }

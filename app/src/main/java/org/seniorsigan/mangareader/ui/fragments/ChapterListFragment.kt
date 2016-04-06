@@ -19,6 +19,7 @@ import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.ChapterViewHolder
+import org.seniorsigan.mangareader.models.MangaItem
 import org.seniorsigan.mangareader.ui.ShareParserActivity
 
 class ChapterListFragment : Fragment() {
@@ -26,10 +27,10 @@ class ChapterListFragment : Fragment() {
     private lateinit var listView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private val adapter = ArrayListAdapter(ChapterViewHolder::class.java, R.layout.chapter_item)
-    private var currentURL: String? = null
+    private var currentManga: MangaItem? = null
 
     companion object {
-        val urlArgument = "CHAPTER_URL_ARGUMENT"
+        val mangaItemArgument = "CHAPTER_URL_ARGUMENT"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,7 +40,7 @@ class ChapterListFragment : Fragment() {
             listView = find<RecyclerView>(R.id.rv_chapter_list)
             progressBar = find<ProgressBar>(R.id.progressBar)
         })
-        currentURL = savedInstanceState?.getString(urlArgument)
+        currentManga = savedInstanceState?.getSerializable(mangaItemArgument) as MangaItem?
 
         listView.layoutManager = LinearLayoutManager(context)
         adapter.onItemClickListener = { chapter ->
@@ -55,28 +56,28 @@ class ChapterListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         if (arguments != null) {
-            currentURL = arguments.getString(urlArgument)
+            currentManga = arguments.getSerializable(mangaItemArgument) as MangaItem?
         }
         refresh.onRefresh {
-            renderList(currentURL)
+            renderList(currentManga)
         }
-        renderList(currentURL)
+        renderList(currentManga)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        outState?.putString(urlArgument, currentURL)
+        outState?.putSerializable(mangaItemArgument, currentManga)
     }
 
-    fun renderList(url: String?) {
-        if (url == null) {
-            Log.w(TAG, "ChapterListFragment get null url. Nothing to show.")
+    fun renderList(manga: MangaItem?) {
+        if (manga == null) {
+            Log.w(TAG, "ChapterListFragment get null MangaItem. Nothing to show.")
             refresh.isRefreshing = false
             return
         }
 
-        App.chaptersRepository.findAll(url, { list ->
-            Log.d(TAG, "Find chapters for $url")
+        App.chaptersRepository.findAll(manga, { list ->
+            Log.d(TAG, "Find chapters for $manga")
             if (activity == null) return@findAll
             onUiThread {
                 adapter.insert(list)

@@ -2,7 +2,6 @@ package org.seniorsigan.mangareader.ui.widgets
 
 import android.content.Context
 import android.graphics.PointF
-import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -10,15 +9,9 @@ import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.ImageViewState
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.squareup.picasso.Picasso
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okio.BufferedSource
-import okio.Okio
 import org.jetbrains.anko.async
 import org.jetbrains.anko.onUiThread
 import org.seniorsigan.mangareader.App
-import org.seniorsigan.mangareader.usecases.readmanga.TransportWithCache
-import java.io.File
 
 abstract class ImageViewFacade(
         protected val context: Context,

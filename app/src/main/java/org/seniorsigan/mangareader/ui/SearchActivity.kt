@@ -16,7 +16,7 @@ import org.jetbrains.anko.find
 import org.jetbrains.anko.onUiThread
 import org.jetbrains.anko.searchManager
 import org.seniorsigan.mangareader.App
-import org.seniorsigan.mangareader.INTENT_MANGA_URL
+import org.seniorsigan.mangareader.INTENT_MANGA
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
@@ -45,7 +45,7 @@ class SearchActivity : AppCompatActivity() {
         listView.layoutManager = LinearLayoutManager(applicationContext)
         adapter.onItemClickListener = { manga ->
             startActivity(with(Intent(this, MangaActivity::class.java), {
-                putExtra(INTENT_MANGA_URL, manga.url)
+                putExtra(INTENT_MANGA, manga)
                 this
             }))
         }
