@@ -11,7 +11,7 @@ import org.seniorsigan.mangareader.App
 import java.io.File
 
 class TransportWithCache(val context: Context, val client: OkHttpClient = OkHttpClient()) {
-    private val cache: MutableMap<String, Uri> = linkedMapOf()
+    private val storage = context.getSharedPreferences("TransportCache", 0)
     private val MANGA_CACHE = "manga-cache"
 
     /**
@@ -19,17 +19,21 @@ class TransportWithCache(val context: Context, val client: OkHttpClient = OkHttp
      */
     fun load(url: String): Uri? {
         val key = generateName(url)
-        if (cache.containsKey(key)) {
+        if (storage.contains(key)) {
             Log.d("TransportWithCache", "From cache $url")
-            return cache[key]
+            return Uri.parse(storage.getString(key, null))
         }
 
         Log.d("TransportWithCache", "From internet $url")
         val req = Request.Builder().url(url).build()
         val res = client.newCall(req).execute()
         if (res.isSuccessful) {
-            cache[key] = Uri.fromFile(saveOnDisk(url, res.body().source()))
-            return cache[key]
+            val uri = Uri.fromFile(saveOnDisk(url, res.body().source()))
+            with(storage.edit(), {
+                putString(key, uri.toString())
+                commit()
+            })
+            return uri
         }
         Log.d("TransportWithCache", "Error loading data from $url: ${res.code()}")
         return null
