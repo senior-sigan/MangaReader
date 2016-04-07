@@ -10,14 +10,15 @@ import org.seniorsigan.mangareader.data.MangaSearchRepositoryImpl
 import org.seniorsigan.mangareader.data.cache.BookmarksRepository
 import org.seniorsigan.mangareader.data.cache.ChaptersCacheRepository
 import org.seniorsigan.mangareader.data.cache.MangaCacheRepository
+import org.seniorsigan.mangareader.data.network.ChaptersNetworkRepository
 import org.seniorsigan.mangareader.data.network.MangaNetworkRepository
-import org.seniorsigan.mangareader.data.network.ReadmangaMangaApiConverter
+import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaMangaApiConverter
 import org.seniorsigan.mangareader.usecases.BookmarksManager
 import org.seniorsigan.mangareader.usecases.DigestGenerator
 import org.seniorsigan.mangareader.usecases.TransportWithCache
-import org.seniorsigan.mangareader.data.network.ChaptersNetworkRepository
-import org.seniorsigan.mangareader.usecases.readmanga.MangaPageParser
-import org.seniorsigan.mangareader.usecases.readmanga.QuerySearch
+import org.seniorsigan.mangareader.usecases.readmanga.MintmangaUrls
+import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaUrls
+import org.seniorsigan.mangareader.usecases.readmanga.SelfmangaUrls
 
 const val TAG = "MangaReader"
 const val SHARED_URL = "SHARED_URL_INTENT"
@@ -30,14 +31,12 @@ class App: Application() {
         val mangaSearchController = MangaSearchController()
 
         lateinit var chaptersRepository: ChaptersRepositoryImpl
-        val mangaPageParser = MangaPageParser()
         val digest = DigestGenerator()
         private val gsonBuilder = GsonBuilder()
         private val gson = gsonBuilder.create()
         lateinit var transport: TransportWithCache
         lateinit var bookmarkManager: BookmarksManager
         private val readmangaConverter = ReadmangaMangaApiConverter()
-        val querySearch = QuerySearch("http://readmanga.me", readmangaConverter)
 
         fun toJson(data: Any?): String {
             return gson.toJson(data)
@@ -61,29 +60,29 @@ class App: Application() {
         bookmarkManager = BookmarksManager(chaptersRepository, bookmarksRepository)
 
         mangaSearchController.register(
-                "readmanga",
+                ReadmangaUrls.name,
                 MangaSearchRepositoryImpl(
                         MangaCacheRepository("ReadmangaCache", applicationContext),
                         MangaNetworkRepository(
-                                "http://readmanga.me/list?sortType=rate",
+                                ReadmangaUrls,
                                 applicationContext,
                                 readmangaConverter)))
 
         mangaSearchController.register(
-                "mintmanga",
+                MintmangaUrls.name,
                 MangaSearchRepositoryImpl(
                         MangaCacheRepository("MintmangaCache", applicationContext),
                         MangaNetworkRepository(
-                                "http://mintmanga.com/list?sortType=rate",
+                                MintmangaUrls,
                                 applicationContext,
                                 readmangaConverter)))
 
         mangaSearchController.register(
-                "selfmanga",
+                MintmangaUrls.name,
                 MangaSearchRepositoryImpl(
                         MangaCacheRepository("SelfmangaCache", applicationContext),
                         MangaNetworkRepository(
-                                "http://selfmanga.ru/list?sortType=rate",
+                                SelfmangaUrls,
                                 applicationContext,
                                 readmangaConverter)))
     }

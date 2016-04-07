@@ -10,12 +10,30 @@ class MangaCacheRepository(
         private val context: Context
 ): MangaSearchRepository {
     private val storage = context.getSharedPreferences(cacheName, 0)
+    private val detailsStorage = context.getSharedPreferences("$cacheName-details", 0)
 
     override fun findAll(callback: (List<MangaItem>) -> Unit) {
         val list = storage.all
                 .map { it.value as String }
                 .map { App.parseJson(it, MangaItem::class.java) }
                 .filterNotNull()
+                .sortedBy { it._id }
+        callback(list)
+    }
+
+    override fun find(url: String, callback: (MangaItem?) -> Unit) {
+        val details = detailsStorage.getString(url, null)
+        val basic = storage.getString(url, null)
+        val manga = App.parseJson(details ?: basic, MangaItem::class.java)
+        callback(manga)
+    }
+
+    override fun search(query: String, callback: (List<MangaItem>) -> Unit) {
+        val list = storage.all
+                .map { it.value as String }
+                .map { App.parseJson(it, MangaItem::class.java) }
+                .filterNotNull()
+                .filter { it.title.toLowerCase() == query.toLowerCase() }
                 .sortedBy { it._id }
         callback(list)
     }
@@ -27,6 +45,15 @@ class MangaCacheRepository(
             mangaList.forEach { manga ->
                 putString(manga.url, App.toJson(manga))
             }
+            commit()
+        })
+    }
+
+    fun update(item: MangaItem?) {
+        if (item == null) return
+
+        with(detailsStorage.edit(), {
+            putString(item.url, App.toJson(item))
             commit()
         })
     }

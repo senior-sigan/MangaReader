@@ -30,6 +30,8 @@ class SearchActivity : AppCompatActivity() {
     lateinit var progress: ProgressBar
     private val adapter = ArrayListAdapter(MangaViewHolder::class.java, R.layout.manga_item)
 
+    private val searchEngine: String = "readmanga"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -85,7 +87,7 @@ class SearchActivity : AppCompatActivity() {
         clearResults()
         progress.visibility = View.VISIBLE
         searchView.clearFocus()
-        App.querySearch.search(query, { list ->
+        App.mangaSearchController.search(searchEngine, query, { list ->
             Log.d(TAG, "Found $list")
             onUiThread {
                 progress.visibility = View.GONE
