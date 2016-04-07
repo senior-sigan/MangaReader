@@ -18,7 +18,12 @@ import org.seniorsigan.mangareader.models.MangaItem
 import org.seniorsigan.mangareader.ui.fragments.BookmarkListFragment
 import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MangaListFragment.OnItemClickListener {
+class MainActivity :
+        AppCompatActivity(),
+        NavigationView.OnNavigationItemSelectedListener,
+        MangaListFragment.OnItemClickListener,
+        BookmarkListFragment.OnItemClickListener
+{
     override fun onItemClick(item: MangaItem) {
         startActivity(with(Intent(this, MangaActivity::class.java), {
             putExtra(INTENT_MANGA, item)
