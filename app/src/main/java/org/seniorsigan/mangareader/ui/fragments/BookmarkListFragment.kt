@@ -21,15 +21,13 @@ import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.MangaViewHolder
 import org.seniorsigan.mangareader.models.MangaItem
 
-class MangaListFragment : Fragment() {
+class BookmarkListFragment : Fragment() {
     private lateinit var refresh: SwipeRefreshLayout
     private lateinit var listView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private val adapter = ArrayListAdapter(MangaViewHolder::class.java, R.layout.manga_item)
 
     lateinit var onItemClickListener: OnItemClickListener
-
-    private val searchEngine: String = "readmanga"
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -64,8 +62,9 @@ class MangaListFragment : Fragment() {
     }
 
     fun renderList() {
-        App.mangaSearchController.search(searchEngine, { list ->
+        App.bookmarkManager.search({ list ->
             if (activity == null) return@search
+            Log.d(TAG, "Bookmarks $list")
             onUiThread {
                 adapter.update(list)
                 refresh.isRefreshing = false

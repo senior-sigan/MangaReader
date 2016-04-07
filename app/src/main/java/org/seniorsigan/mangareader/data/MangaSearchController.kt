@@ -5,8 +5,8 @@ import org.seniorsigan.mangareader.models.MangaItem
 class MangaSearchController {
     private val engines: MutableMap<String, MangaSearchRepository> = hashMapOf()
 
-    fun search(engineName: String): List<MangaItem> {
-        return engines[engineName]?.findAll() ?: emptyList()
+    fun search(engineName: String, callback: (List<MangaItem>) -> Unit) {
+        engines[engineName]?.findAll(callback)
     }
 
     fun register(name: String, search: MangaSearchRepository): MangaSearchController {

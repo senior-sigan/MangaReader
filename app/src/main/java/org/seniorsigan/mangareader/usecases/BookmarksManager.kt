@@ -7,8 +7,8 @@ import org.seniorsigan.mangareader.models.MangaItem
 import org.seniorsigan.mangareader.usecases.readmanga.ChaptersRepository
 
 class BookmarksManager(
-        val chaptersRepository: ChaptersRepository,
-        val bookmarksRepository: BookmarksRepository
+        private val chaptersRepository: ChaptersRepository,
+        private val bookmarksRepository: BookmarksRepository
 ) {
     fun save(manga: MangaItem) {
         val bookmark = BookmarkItem(manga)
@@ -25,7 +25,9 @@ class BookmarksManager(
         })
     }
 
-    fun findAllManga(): List<MangaItem> {
-        return bookmarksRepository.findAll().map { it.manga }
+    fun search(callback: (List<MangaItem>) -> Unit) {
+        return bookmarksRepository.findAll { bookmarks ->
+            callback(bookmarks.map { it.manga })
+        }
     }
 }

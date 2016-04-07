@@ -10,8 +10,12 @@ import org.seniorsigan.mangareader.data.cache.BookmarksRepository
 import org.seniorsigan.mangareader.data.cache.MangaCacheRepository
 import org.seniorsigan.mangareader.data.network.MangaNetworkRepository
 import org.seniorsigan.mangareader.data.network.ReadmangaMangaApiConverter
-import org.seniorsigan.mangareader.usecases.*
-import org.seniorsigan.mangareader.usecases.readmanga.*
+import org.seniorsigan.mangareader.usecases.BookmarksManager
+import org.seniorsigan.mangareader.usecases.DigestGenerator
+import org.seniorsigan.mangareader.usecases.TransportWithCache
+import org.seniorsigan.mangareader.usecases.readmanga.ChaptersRepository
+import org.seniorsigan.mangareader.usecases.readmanga.MangaPageParser
+import org.seniorsigan.mangareader.usecases.readmanga.QuerySearch
 
 const val TAG = "MangaReader"
 const val SHARED_URL = "SHARED_URL_INTENT"
@@ -20,7 +24,6 @@ const val INTENT_MANGA = "INTENT_MANGA"
 class App: Application() {
     companion object {
         val client = OkHttpClient()
-        lateinit var searchController: SearchController
 
         val mangaSearchController = MangaSearchController()
 
@@ -53,13 +56,6 @@ class App: Application() {
         transport = TransportWithCache(applicationContext)
         val bookmarksRepository = BookmarksRepository(applicationContext)
         bookmarkManager = BookmarksManager(chaptersRepository, bookmarksRepository)
-        searchController = with(SearchController(), {
-            register(ReadmangaSearch.name, ReadmangaSearch(readmangaConverter))
-            register(MintmangaSearch.name, MintmangaSearch(readmangaConverter))
-            register(SelfmangaSearch.name, SelfmangaSearch(readmangaConverter))
-            register(BookmarksSearch.name, BookmarksSearch(bookmarkManager))
-            this
-        })
 
         mangaSearchController.register(
                 "readmanga",

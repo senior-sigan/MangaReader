@@ -29,10 +29,12 @@ class BookmarksRepository(val context: Context) {
         })
     }
 
-    fun findAll(): List<BookmarkItem> {
-        return storage.all
+    fun findAll(callback: (List<BookmarkItem>) -> Unit) {
+        val list = storage.all
                 .map { it.value as String }
                 .map { App.parseJson(it, BookmarkItem::class.java) }
                 .filterNotNull()
+
+        callback(list)
     }
 }

@@ -12,16 +12,22 @@ class MangaNetworkRepository(
         val context: Context,
         val converter: MangaAPIConverter
 ): MangaSearchRepository {
-    val baseURL = Uri.parse(apiURL).host
+    private val uri = Uri.parse(apiURL)
+    private val baseURL = Uri.Builder()
+            .scheme(uri.scheme)
+            .authority(uri.authority)
+            .toString()
 
-    override fun findAll(): List<MangaItem> {
+    override fun findAll(callback: (List<MangaItem>) -> Unit) {
         val req = Request.Builder().url(apiURL).build()
         val res = App.client.newCall(req).execute()!!
-        if (res.isSuccessful) {
+        val list = if (res.isSuccessful) {
             val html = res.body().string()
-            return converter.parse(html, baseURL)
+            converter.parse(html, baseURL)
         } else {
-            return emptyList()
+            emptyList()
         }
+
+        callback(list)
     }
 }

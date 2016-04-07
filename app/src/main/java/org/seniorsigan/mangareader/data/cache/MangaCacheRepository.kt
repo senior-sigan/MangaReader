@@ -6,16 +6,18 @@ import org.seniorsigan.mangareader.data.MangaSearchRepository
 import org.seniorsigan.mangareader.models.MangaItem
 
 class MangaCacheRepository(
-        val cacheName: String,
-        val context: Context
+        private val cacheName: String,
+        private val context: Context
 ): MangaSearchRepository {
-    val storage = context.getSharedPreferences(cacheName, 0)
+    private val storage = context.getSharedPreferences(cacheName, 0)
 
-    override fun findAll(): List<MangaItem> {
-        return storage.all
+    override fun findAll(callback: (List<MangaItem>) -> Unit) {
+        val list = storage.all
                 .map { it.value as String }
                 .map { App.parseJson(it, MangaItem::class.java) }
                 .filterNotNull()
+                .sortedBy { it._id }
+        callback(list)
     }
 
     fun updateAll(mangaList: List<MangaItem>) {
