@@ -4,16 +4,18 @@ import android.app.Application
 import android.util.Log
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import org.seniorsigan.mangareader.data.ChaptersRepositoryImpl
 import org.seniorsigan.mangareader.data.MangaSearchController
 import org.seniorsigan.mangareader.data.MangaSearchRepositoryImpl
 import org.seniorsigan.mangareader.data.cache.BookmarksRepository
+import org.seniorsigan.mangareader.data.cache.ChaptersCacheRepository
 import org.seniorsigan.mangareader.data.cache.MangaCacheRepository
 import org.seniorsigan.mangareader.data.network.MangaNetworkRepository
 import org.seniorsigan.mangareader.data.network.ReadmangaMangaApiConverter
 import org.seniorsigan.mangareader.usecases.BookmarksManager
 import org.seniorsigan.mangareader.usecases.DigestGenerator
 import org.seniorsigan.mangareader.usecases.TransportWithCache
-import org.seniorsigan.mangareader.usecases.readmanga.ChaptersRepository
+import org.seniorsigan.mangareader.data.network.ChaptersNetworkRepository
 import org.seniorsigan.mangareader.usecases.readmanga.MangaPageParser
 import org.seniorsigan.mangareader.usecases.readmanga.QuerySearch
 
@@ -27,7 +29,7 @@ class App: Application() {
 
         val mangaSearchController = MangaSearchController()
 
-        val chaptersRepository = ChaptersRepository()
+        lateinit var chaptersRepository: ChaptersRepositoryImpl
         val mangaPageParser = MangaPageParser()
         val digest = DigestGenerator()
         private val gsonBuilder = GsonBuilder()
@@ -55,6 +57,7 @@ class App: Application() {
         super.onCreate()
         transport = TransportWithCache(applicationContext)
         val bookmarksRepository = BookmarksRepository(applicationContext)
+        chaptersRepository = ChaptersRepositoryImpl(ChaptersCacheRepository(applicationContext), ChaptersNetworkRepository())
         bookmarkManager = BookmarksManager(chaptersRepository, bookmarksRepository)
 
         mangaSearchController.register(

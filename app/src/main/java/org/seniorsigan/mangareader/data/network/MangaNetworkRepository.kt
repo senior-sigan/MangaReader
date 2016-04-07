@@ -10,7 +10,7 @@ import org.seniorsigan.mangareader.models.MangaItem
 class MangaNetworkRepository(
         val apiURL: String,
         val context: Context,
-        val converter: MangaAPIConverter
+        val converter: ReadmangaMangaApiConverter
 ): MangaSearchRepository {
     private val uri = Uri.parse(apiURL)
     private val baseURL = Uri.Builder()

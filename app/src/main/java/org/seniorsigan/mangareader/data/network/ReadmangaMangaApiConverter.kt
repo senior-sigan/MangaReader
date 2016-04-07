@@ -3,8 +3,8 @@ package org.seniorsigan.mangareader.data.network
 import org.jsoup.Jsoup
 import org.seniorsigan.mangareader.models.MangaItem
 
-class ReadmangaMangaApiConverter: MangaAPIConverter {
-    override fun parse(data: String?, baseURL: String): List<MangaItem> {
+class ReadmangaMangaApiConverter {
+    fun parse(data: String?, baseURL: String): List<MangaItem> {
         if (data == null) return emptyList()
 
         val doc = Jsoup.parse(data)

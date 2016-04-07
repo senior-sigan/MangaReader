@@ -1,10 +1,11 @@
 package org.seniorsigan.mangareader.usecases
 
 import android.util.Log
+import org.seniorsigan.mangareader.data.ChaptersRepository
 import org.seniorsigan.mangareader.data.cache.BookmarksRepository
 import org.seniorsigan.mangareader.models.BookmarkItem
 import org.seniorsigan.mangareader.models.MangaItem
-import org.seniorsigan.mangareader.usecases.readmanga.ChaptersRepository
+import org.seniorsigan.mangareader.data.network.ChaptersNetworkRepository
 
 class BookmarksManager(
         private val chaptersRepository: ChaptersRepository,
