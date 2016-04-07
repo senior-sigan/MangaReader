@@ -5,11 +5,12 @@ import okhttp3.*
 import org.jsoup.Jsoup
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.TAG
+import org.seniorsigan.mangareader.data.network.ReadmangaMangaApiConverter
 import org.seniorsigan.mangareader.models.MangaItem
 import org.seniorsigan.mangareader.usecases.Search
 import java.io.IOException
 
-class QuerySearch(val baseURL: String) {
+class QuerySearch(val baseURL: String, val converter: ReadmangaMangaApiConverter) {
     val searchURL = "$baseURL/search"
 
     fun search(query: String, callback: (List<MangaItem>) -> Unit) {
@@ -18,7 +19,7 @@ class QuerySearch(val baseURL: String) {
         App.client.newCall(req).enqueue(object : Callback {
             override fun onResponse(call: Call?, response: Response?) {
                 val html = response?.body()?.string()
-                callback(parse(html))
+                callback(converter.parse(html, baseURL))
             }
 
             override fun onFailure(call: Call?, e: IOException?) {
@@ -26,27 +27,9 @@ class QuerySearch(val baseURL: String) {
             }
         })
     }
-
-    private fun parse(html: String?): List<MangaItem> {
-        if (html == null) return emptyList()
-
-        val doc = Jsoup.parse(html)
-        val elements = doc.select(".tiles .tile")
-        return elements.mapIndexed { i, el ->
-            try {
-                val img = el.select(".img img").first().attr("src")
-                val title = el.select(".desc h3 a").first().text()
-                val url = baseURL + el.select(".desc h3 a").first().attr("href")
-                MangaItem(_id = i, coverURL = img, title = title, url = url)
-            } catch (e: Exception) {
-                Log.d(TAG, "Can't parse element: $e", e)
-                null
-            }
-        }.filterNotNull()
-    }
 }
 
-abstract class PopularSearch: Search {
+abstract class PopularSearch(val converter: ReadmangaMangaApiConverter): Search {
     abstract val baseURL: String
     val searchURL = "$baseURL/list?sortType=rate"
 
@@ -55,7 +38,7 @@ abstract class PopularSearch: Search {
         App.client.newCall(req).enqueue(object : Callback {
             override fun onResponse(call: Call?, response: Response?) {
                 val html = response?.body()?.string()
-                callback(parse(html))
+                callback(converter.parse(html, baseURL))
             }
 
             override fun onFailure(call: Call?, e: IOException?) {
@@ -63,22 +46,9 @@ abstract class PopularSearch: Search {
             }
         })
     }
-
-    private fun parse(html: String?): List<MangaItem> {
-        if (html == null) return emptyList()
-
-        val doc = Jsoup.parse(html)
-        val elements = doc.select(".tiles .tile")
-        return elements.mapIndexed { i, el ->
-            val img = el.select(".img img").first().attr("src")
-            val title = el.select(".desc h3 a").first().text()
-            val url = baseURL + el.select(".desc h3 a").first().attr("href")
-            MangaItem(_id = i, coverURL = img, title = title, url = url)
-        }
-    }
 }
 
-class ReadmangaSearch: PopularSearch() {
+class ReadmangaSearch(converter: ReadmangaMangaApiConverter) : PopularSearch(converter) {
     companion object {
         val name = "readmanga"
     }
@@ -87,7 +57,7 @@ class ReadmangaSearch: PopularSearch() {
         get() = "http://readmanga.me"
 }
 
-class MintmangaSearch: PopularSearch() {
+class MintmangaSearch(converter: ReadmangaMangaApiConverter) : PopularSearch(converter) {
     companion object {
         val name = "mintmanga"
     }
@@ -96,7 +66,7 @@ class MintmangaSearch: PopularSearch() {
         get() = "http://mintmanga.com/"
 }
 
-class SelfmangaSearch: PopularSearch() {
+class SelfmangaSearch(converter: ReadmangaMangaApiConverter) : PopularSearch(converter) {
     companion object {
         val name = "selfmanga"
     }

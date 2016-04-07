@@ -1,6 +1,5 @@
 package org.seniorsigan.mangareader.usecases.readmanga
 
-import android.net.Uri
 import android.util.Log
 import okhttp3.Call
 import okhttp3.Callback

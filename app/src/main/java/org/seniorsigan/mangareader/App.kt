@@ -24,7 +24,6 @@ class App: Application() {
 
         val mangaSearchController = MangaSearchController()
 
-        val querySearch = QuerySearch("http://readmanga.me")
         val chaptersRepository = ChaptersRepository()
         val mangaPageParser = MangaPageParser()
         val digest = DigestGenerator()
@@ -33,6 +32,7 @@ class App: Application() {
         lateinit var transport: TransportWithCache
         lateinit var bookmarkManager: BookmarksManager
         private val readmangaConverter = ReadmangaMangaApiConverter()
+        val querySearch = QuerySearch("http://readmanga.me", readmangaConverter)
 
         fun toJson(data: Any?): String {
             return gson.toJson(data)
@@ -54,9 +54,9 @@ class App: Application() {
         val bookmarksRepository = BookmarksRepository(applicationContext)
         bookmarkManager = BookmarksManager(chaptersRepository, bookmarksRepository)
         searchController = with(SearchController(), {
-            register(ReadmangaSearch.name, ReadmangaSearch())
-            register(MintmangaSearch.name, MintmangaSearch())
-            register(SelfmangaSearch.name, SelfmangaSearch())
+            register(ReadmangaSearch.name, ReadmangaSearch(readmangaConverter))
+            register(MintmangaSearch.name, MintmangaSearch(readmangaConverter))
+            register(SelfmangaSearch.name, SelfmangaSearch(readmangaConverter))
             register(BookmarksSearch.name, BookmarksSearch(bookmarkManager))
             this
         })
