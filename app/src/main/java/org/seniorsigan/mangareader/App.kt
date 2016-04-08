@@ -12,11 +12,11 @@ import org.seniorsigan.mangareader.data.cache.PagesCacheRepository
 import org.seniorsigan.mangareader.data.network.ChaptersNetworkRepository
 import org.seniorsigan.mangareader.data.network.MangaNetworkRepository
 import org.seniorsigan.mangareader.data.network.PagesNetworkRepository
-import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaMangaApiConverter
 import org.seniorsigan.mangareader.usecases.BookmarksManager
 import org.seniorsigan.mangareader.usecases.DigestGenerator
 import org.seniorsigan.mangareader.usecases.TransportWithCache
 import org.seniorsigan.mangareader.usecases.readmanga.MintmangaUrls
+import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaMangaApiConverter
 import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaUrls
 import org.seniorsigan.mangareader.usecases.readmanga.SelfmangaUrls
 

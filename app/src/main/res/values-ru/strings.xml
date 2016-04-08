@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MangaReader</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="filter"></string>
+    <string name="menu_about">О приложении</string>
+    <string name="search">Поиск</string>
+    <string name="search_hint">Поиск</string>
+    <string name="popular">Популярное</string>
+    <string name="settings">Настройки</string>
+    <string name="title_activity_chapter_view"></string>
+    <string name="action_settings">Настройки</string>
+</resources>
