@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import okhttp3.HttpUrl
+import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.SHARED_URL
 import org.seniorsigan.mangareader.TAG
-import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaParser
 
 class ShareParserActivity: AppCompatActivity() {
-    val parser = ReadmangaParser()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share_parser)
@@ -36,8 +34,7 @@ class ShareParserActivity: AppCompatActivity() {
             return
         }
         var newIntent = Intent(this, MainActivity::class.java)
-        parser.extractPages(url.toString(), { pages ->
-            Log.d(org.seniorsigan.mangareader.TAG, "ShareParserActivity for $url find $pages")
+        App.pagesRepository.findAll(url.toString(), { pages ->
             if (pages.isNotEmpty()) {
                 newIntent = Intent(this, ChapterActivity::class.java)
                 newIntent.putExtra(SHARED_URL, pages.toTypedArray())

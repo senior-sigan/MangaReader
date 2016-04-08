@@ -1,21 +1,21 @@
 package org.seniorsigan.mangareader.data.network
 
+import android.net.Uri
 import okhttp3.Request
 import org.seniorsigan.mangareader.App
-import org.seniorsigan.mangareader.data.ChaptersRepository
-import org.seniorsigan.mangareader.models.ChapterItem
-import org.seniorsigan.mangareader.models.MangaItem
+import org.seniorsigan.mangareader.data.PagesRepository
 import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaMangaApiConverter
 
-class ChaptersNetworkRepository(
+class PagesNetworkRepository(
         val converter: ReadmangaMangaApiConverter
-): ChaptersRepository {
-    override fun findAll(manga: MangaItem, callback: (List<ChapterItem>) -> Unit) {
-        val req = Request.Builder().url(manga.url).build()
+): PagesRepository {
+    override fun findAll(url: String, callback: (List<String>) -> Unit) {
+        val uri = Uri.parse(url).buildUpon().appendQueryParameter("mature", "1")
+        val req = Request.Builder().url(uri.toString()).build()
         val res = App.client.newCall(req).execute()!!
         val list = if (res.isSuccessful) {
             val html = res.body()?.string()
-            converter.parseChapterList(html, req.url().uri())
+            converter.parseChapter(html)
         } else {
             emptyList()
         }

@@ -4,14 +4,14 @@ import android.app.Application
 import android.util.Log
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
-import org.seniorsigan.mangareader.data.ChaptersRepositoryImpl
-import org.seniorsigan.mangareader.data.MangaSearchController
-import org.seniorsigan.mangareader.data.MangaSearchRepositoryImpl
+import org.seniorsigan.mangareader.data.*
 import org.seniorsigan.mangareader.data.cache.BookmarksRepository
 import org.seniorsigan.mangareader.data.cache.ChaptersCacheRepository
 import org.seniorsigan.mangareader.data.cache.MangaCacheRepository
+import org.seniorsigan.mangareader.data.cache.PagesCacheRepository
 import org.seniorsigan.mangareader.data.network.ChaptersNetworkRepository
 import org.seniorsigan.mangareader.data.network.MangaNetworkRepository
+import org.seniorsigan.mangareader.data.network.PagesNetworkRepository
 import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaMangaApiConverter
 import org.seniorsigan.mangareader.usecases.BookmarksManager
 import org.seniorsigan.mangareader.usecases.DigestGenerator
@@ -30,7 +30,8 @@ class App: Application() {
 
         val mangaSearchController = MangaSearchController()
 
-        lateinit var chaptersRepository: ChaptersRepositoryImpl
+        lateinit var chaptersRepository: ChaptersRepository
+        lateinit var pagesRepository: PagesRepository
         val digest = DigestGenerator()
         private val gsonBuilder = GsonBuilder()
         private val gson = gsonBuilder.create()
@@ -56,7 +57,8 @@ class App: Application() {
         super.onCreate()
         transport = TransportWithCache(applicationContext)
         val bookmarksRepository = BookmarksRepository(applicationContext)
-        chaptersRepository = ChaptersRepositoryImpl(ChaptersCacheRepository(applicationContext), ChaptersNetworkRepository())
+        chaptersRepository = ChaptersRepositoryImpl(ChaptersCacheRepository(applicationContext), ChaptersNetworkRepository(readmangaConverter))
+        pagesRepository = PagesRepositoryImpl(PagesCacheRepository(applicationContext), PagesNetworkRepository(readmangaConverter))
         bookmarkManager = BookmarksManager(chaptersRepository, bookmarksRepository)
 
         mangaSearchController.register(
