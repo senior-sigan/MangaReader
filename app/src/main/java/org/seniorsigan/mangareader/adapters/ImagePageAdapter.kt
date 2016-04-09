@@ -13,19 +13,28 @@ import org.seniorsigan.mangareader.ui.widgets.ImageViewFacade
 import org.seniorsigan.mangareader.ui.widgets.ZoomableImageViewFacade
 
 class ImagePageAdapter(
-        val urls: List<String> = emptyList(),
         val context: Context
 ): PagerAdapter() {
+    private val collection: MutableList<String> = arrayListOf()
+
+    fun update(models: List<String>) {
+        synchronized(collection, {
+            collection.clear()
+            collection.addAll(models)
+            notifyDataSetChanged()
+        })
+    }
+
     override fun isViewFromObject(view: View, obj: Any): Boolean {
         return view == (obj as ImageViewItem).view
     }
 
-    override fun getCount(): Int = urls.size
+    override fun getCount(): Int = collection.size
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val itemView = LayoutInflater.from(context).inflate(R.layout.image_view, container, false)
         container.addView(itemView)
-        val item = ImageViewItem(itemView, context, urls[position])
+        val item = ImageViewItem(itemView, context, collection[position])
         return item
     }
 

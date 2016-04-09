@@ -20,7 +20,7 @@ import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.ChapterViewHolder
 import org.seniorsigan.mangareader.models.MangaItem
-import org.seniorsigan.mangareader.ui.ShareParserActivity
+import org.seniorsigan.mangareader.ui.ChapterActivity
 
 class ChapterListFragment : Fragment() {
     private lateinit var refresh: SwipeRefreshLayout
@@ -44,7 +44,7 @@ class ChapterListFragment : Fragment() {
 
         listView.layoutManager = LinearLayoutManager(context)
         adapter.onItemClickListener = { chapter ->
-            startActivity(with(Intent(context, ShareParserActivity::class.java), {
+            startActivity(with(Intent(context, ChapterActivity::class.java), {
                 putExtra(android.content.Intent.EXTRA_TEXT, chapter.url)
             }))
         }

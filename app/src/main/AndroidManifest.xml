@@ -25,8 +25,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.ShareParserActivity"
-            android:noHistory="true">
+            android:name=".ui.ChapterActivity"
+            android:theme="@style/AppTheme.Translucent">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -51,9 +51,6 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.ChapterActivity"
-            android:theme="@style/AppTheme.Translucent" />
         <activity
             android:name=".ui.SearchActivity"
             android:launchMode="singleTop"
