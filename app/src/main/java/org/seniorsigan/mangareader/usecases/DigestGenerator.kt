@@ -1,5 +1,6 @@
 package org.seniorsigan.mangareader.usecases
 
+import android.util.Log
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -27,7 +28,7 @@ class DigestGenerator {
             return hexString.toString()
 
         } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
+            Log.e("DigestGenerator", "${e.message}", e)
         }
 
         return ""

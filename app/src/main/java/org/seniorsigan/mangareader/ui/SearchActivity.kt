@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
@@ -18,7 +17,6 @@ import org.jetbrains.anko.searchManager
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.INTENT_MANGA
 import org.seniorsigan.mangareader.R
-import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.MangaViewHolder
 
@@ -88,7 +86,6 @@ class SearchActivity : AppCompatActivity() {
         progress.visibility = View.VISIBLE
         searchView.clearFocus()
         App.mangaSearchController.search(searchEngine, query, { list ->
-            Log.d(TAG, "Found $list")
             onUiThread {
                 progress.visibility = View.GONE
                 adapter.insert(list)

@@ -20,11 +20,9 @@ class TransportWithCache(val context: Context, val client: OkHttpClient = OkHttp
     fun load(url: String): Uri? {
         val key = generateName(url)
         if (storage.contains(key)) {
-            Log.d("TransportWithCache", "From cache $url")
             return Uri.parse(storage.getString(key, null))
         }
 
-        Log.d("TransportWithCache", "From internet $url")
         val req = Request.Builder().url(url).build()
         val res = client.newCall(req).execute()
         if (res.isSuccessful) {
@@ -35,7 +33,7 @@ class TransportWithCache(val context: Context, val client: OkHttpClient = OkHttp
             })
             return uri
         }
-        Log.d("TransportWithCache", "Error loading data from $url: ${res.code()}")
+        Log.w("TransportWithCache", "Error loading data from $url: ${res.code()}")
         return null
     }
 

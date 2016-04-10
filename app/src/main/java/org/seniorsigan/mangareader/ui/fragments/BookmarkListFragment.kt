@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import org.jetbrains.anko.support.v4.onRefresh
 import org.jetbrains.anko.support.v4.onUiThread
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.R
-import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.adapters.ArrayListAdapter
 import org.seniorsigan.mangareader.adapters.MangaViewHolder
 import org.seniorsigan.mangareader.models.MangaItem
@@ -64,7 +62,6 @@ class BookmarkListFragment : Fragment() {
     fun renderList() {
         App.bookmarkManager.search({ list ->
             if (activity == null) return@search
-            Log.d(TAG, "Bookmarks $list")
             onUiThread {
                 adapter.update(list)
                 refresh.isRefreshing = false

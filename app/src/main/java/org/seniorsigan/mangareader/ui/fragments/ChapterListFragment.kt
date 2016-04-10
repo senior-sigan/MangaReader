@@ -77,7 +77,6 @@ class ChapterListFragment : Fragment() {
         }
 
         App.chaptersRepository.findAll(manga, { list ->
-            Log.d(TAG, "Find chapters for $manga")
             if (activity == null) return@findAll
             onUiThread {
                 adapter.insert(list)

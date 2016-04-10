@@ -1,6 +1,5 @@
 package org.seniorsigan.mangareader.data
 
-import android.util.Log
 import org.jetbrains.anko.async
 import org.seniorsigan.mangareader.data.cache.ChaptersCacheRepository
 import org.seniorsigan.mangareader.data.network.ChaptersNetworkRepository
@@ -14,10 +13,8 @@ class ChaptersRepositoryImpl(
     override fun findAll(manga: MangaItem, callback: (List<ChapterItem>) -> Unit) {
         async() {
             cache.findAll(manga, { listFromCache ->
-                Log.d("ChaptersRepositoryImpl", "From cache $listFromCache")
                 callback(listFromCache)
                 network.findAll(manga, { listFromNetwork ->
-                    Log.d("ChaptersRepositoryImpl", "From network $listFromNetwork")
                     callback(listFromNetwork)
                     cache.updateAll(manga, listFromNetwork)
                 })

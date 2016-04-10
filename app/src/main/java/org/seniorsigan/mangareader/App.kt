@@ -21,7 +21,6 @@ import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaUrls
 import org.seniorsigan.mangareader.usecases.readmanga.SelfmangaUrls
 
 const val TAG = "MangaReader"
-const val SHARED_URL = "SHARED_URL_INTENT"
 const val INTENT_MANGA = "INTENT_MANGA"
 
 class App: Application() {

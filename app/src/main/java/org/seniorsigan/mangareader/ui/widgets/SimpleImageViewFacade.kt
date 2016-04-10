@@ -65,7 +65,6 @@ class ZoomableImageViewFacade(context: Context, imageView: View?) : ImageViewFac
             } else {
                 context.onUiThread {
                     try {
-                        Log.d("ZoomableImageViewFacade", "Load image from $uri")
                         view.setImage(ImageSource.uri(uri), ImageViewState(0f, PointF(0f, 0f), 0))
                         callback.onSuccess()
                     } catch (e: Exception) {
