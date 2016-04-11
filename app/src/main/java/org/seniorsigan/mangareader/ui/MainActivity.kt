@@ -3,10 +3,12 @@ package org.seniorsigan.mangareader.ui
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -23,6 +25,9 @@ class MainActivity :
         MangaListFragment.OnItemClickListener,
         BookmarkListFragment.OnItemClickListener
 {
+    private lateinit var drawer: DrawerLayout
+    private lateinit var filters: RecyclerView
+
     override fun onItemClick(item: MangaItem) {
         startActivity(with(Intent(this, MangaActivity::class.java), {
             putExtra(INTENT_MANGA, item)
@@ -36,7 +41,8 @@ class MainActivity :
         val toolbar = find<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val drawer = find<DrawerLayout>(R.id.drawer_layout)
+        drawer = find<DrawerLayout>(R.id.drawer_layout)
+        filters = find<RecyclerView>(R.id.filters)
         val toggle = ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
@@ -51,7 +57,6 @@ class MainActivity :
     }
 
     override fun onBackPressed() {
-        val drawer = find<DrawerLayout>(R.id.drawer_layout)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
         } else {
@@ -69,6 +74,11 @@ class MainActivity :
 
         if (id == R.id.menu_search) {
             startActivity(Intent(this, SearchActivity::class.java))
+            return true
+        }
+
+        if (id == R.id.menu_filter) {
+            drawer.openDrawer(GravityCompat.END)
             return true
         }
 

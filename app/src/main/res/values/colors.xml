@@ -6,4 +6,6 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="scrim">#99323232</color>
+    <color name="background_dark">#ff333333</color>
+    <color name="content_placeholder">#ffe0e0e0</color>
 </resources>
