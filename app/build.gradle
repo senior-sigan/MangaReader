@@ -7,9 +7,11 @@ def gitCommitCount =
         Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
 
 android {
+    signingConfigs {
+        release
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "org.seniorsigan.mangareader"
         minSdkVersion 15
@@ -23,6 +25,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
+            zipAlignEnabled true
         }
     }
     compileOptions {
@@ -61,4 +66,17 @@ dependencies {
     compile "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.google.code.gson:gson:2.6.2'
+}
+
+if (project.hasProperty('storeFile')) {
+    android.signingConfigs.release.storeFile = file(storeFile)
+}
+if (project.hasProperty('storePassword')) {
+    android.signingConfigs.release.storePassword = storePassword
+}
+if (project.hasProperty('keyAlias')) {
+    android.signingConfigs.release.keyAlias = keyAlias
+}
+if (project.hasProperty('keyPassword')) {
+    android.signingConfigs.release.keyPassword = keyPassword
 }
