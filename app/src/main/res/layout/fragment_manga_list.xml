@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -18,8 +19,12 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_manga_list"
             android:scrollbars="vertical"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            tools:listitem="@layout/manga_item"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
             />
     </android.support.v4.widget.SwipeRefreshLayout>
 

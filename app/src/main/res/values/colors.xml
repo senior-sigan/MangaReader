@@ -8,4 +8,5 @@
     <color name="scrim">#99323232</color>
     <color name="background_dark">#ff333333</color>
     <color name="content_placeholder">#ffe0e0e0</color>
+    <color name="manga_title_background">#b4000000</color>
 </resources>

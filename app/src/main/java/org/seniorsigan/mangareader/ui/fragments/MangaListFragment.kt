@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -46,7 +47,7 @@ class MangaListFragment : Fragment() {
             progressBar = find<ProgressBar>(R.id.progressBar)
         })
 
-        listView.layoutManager = LinearLayoutManager(context)
+        listView.layoutManager = GridLayoutManager(context, 2)
         adapter.onItemClickListener = { manga -> onItemClickListener.onItemClick(manga) }
         listView.adapter = adapter
 

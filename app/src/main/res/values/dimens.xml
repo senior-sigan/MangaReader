@@ -17,5 +17,7 @@
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="z_drawer">16dp</dimen>
     <dimen name="filter_icon_size">40dp</dimen>
+    <dimen name="manga_column_width">144dp</dimen>
+    <dimen name="manga_column_height">180dp</dimen>
     <item name="match_parent" format="integer" type="dimen">-1</item>
 </resources>
