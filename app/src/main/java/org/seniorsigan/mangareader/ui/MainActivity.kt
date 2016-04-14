@@ -3,6 +3,7 @@ package org.seniorsigan.mangareader.ui
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.DialogFragment
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -17,22 +18,28 @@ import org.seniorsigan.mangareader.INTENT_MANGA
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.models.MangaItem
 import org.seniorsigan.mangareader.ui.fragments.BookmarkListFragment
+import org.seniorsigan.mangareader.ui.fragments.FilterDialogFragment
 import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 
 class MainActivity :
         AppCompatActivity(),
         NavigationView.OnNavigationItemSelectedListener,
         MangaListFragment.OnItemClickListener,
-        BookmarkListFragment.OnItemClickListener
+        BookmarkListFragment.OnItemClickListener,
+        FilterDialogFragment.FilterDialogListener
 {
     private lateinit var drawer: DrawerLayout
-    private lateinit var filters: RecyclerView
+    private lateinit var navigationView: NavigationView
 
     override fun onItemClick(item: MangaItem) {
         startActivity(with(Intent(this, MangaActivity::class.java), {
             putExtra(INTENT_MANGA, item)
             this
         }))
+    }
+
+    override fun onSelected(dialogFragment: DialogFragment) {
+        onNavigationItemSelected(navigationView.menu.getItem(0))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,13 +49,12 @@ class MainActivity :
         setSupportActionBar(toolbar)
 
         drawer = find<DrawerLayout>(R.id.drawer_layout)
-        filters = find<RecyclerView>(R.id.filters)
         val toggle = ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
 
-        val navigationView = find<NavigationView>(R.id.nav_view)
+        navigationView = find<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
         if (savedInstanceState == null) {
@@ -78,7 +84,8 @@ class MainActivity :
         }
 
         if (id == R.id.menu_filter) {
-            drawer.openDrawer(GravityCompat.END)
+            val dialog = FilterDialogFragment()
+            dialog.show(supportFragmentManager, "FilterDialog")
             return true
         }
 

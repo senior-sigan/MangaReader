@@ -4,11 +4,13 @@ import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
+import android.widget.GridLayout
 import android.widget.ProgressBar
 import android.widget.SearchView
 import org.jetbrains.anko.find
@@ -28,8 +30,6 @@ class SearchActivity : AppCompatActivity() {
     lateinit var progress: ProgressBar
     private val adapter = ArrayListAdapter(MangaViewHolder::class.java, R.layout.manga_item)
 
-    private val searchEngine: String = "readmanga"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -42,7 +42,7 @@ class SearchActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        listView.layoutManager = LinearLayoutManager(applicationContext)
+        listView.layoutManager = GridLayoutManager(applicationContext, 2)
         adapter.onItemClickListener = { manga ->
             startActivity(with(Intent(this, MangaActivity::class.java), {
                 putExtra(INTENT_MANGA, manga)
@@ -85,7 +85,7 @@ class SearchActivity : AppCompatActivity() {
         clearResults()
         progress.visibility = View.VISIBLE
         searchView.clearFocus()
-        App.mangaSearchController.search(searchEngine, query, { list ->
+        App.mangaSearchController.search(App.mangaSourceRepository.currentName, query, { list ->
             onUiThread {
                 progress.visibility = View.GONE
                 adapter.insert(list)

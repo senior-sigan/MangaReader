@@ -28,8 +28,6 @@ class MangaListFragment : Fragment() {
 
     lateinit var onItemClickListener: OnItemClickListener
 
-    private val searchEngine: String = "readmanga"
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         try {
@@ -63,7 +61,7 @@ class MangaListFragment : Fragment() {
     }
 
     fun renderList() {
-        App.mangaSearchController.findAll(searchEngine, { list ->
+        App.mangaSearchController.findAll(App.mangaSourceRepository.currentName, { list ->
             if (activity == null) return@findAll
             onUiThread {
                 adapter.update(list)

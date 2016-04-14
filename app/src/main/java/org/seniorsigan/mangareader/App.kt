@@ -28,6 +28,7 @@ class App: Application() {
         val client = OkHttpClient()
 
         val mangaSearchController = MangaSearchController()
+        lateinit var mangaSourceRepository: MangaSourceRepository
 
         lateinit var chaptersRepository: ChaptersRepository
         lateinit var pagesRepository: PagesRepository
@@ -79,12 +80,15 @@ class App: Application() {
                                 readmangaConverter)))
 
         mangaSearchController.register(
-                MintmangaUrls.name,
+                SelfmangaUrls.name,
                 MangaSearchRepositoryImpl(
                         MangaCacheRepository("SelfmangaCache", applicationContext),
                         MangaNetworkRepository(
                                 SelfmangaUrls,
                                 applicationContext,
                                 readmangaConverter)))
+
+        mangaSourceRepository = MangaSourceRepository(applicationContext, mangaSearchController)
+        mangaSourceRepository.setDefault(ReadmangaUrls.name)
     }
 }
