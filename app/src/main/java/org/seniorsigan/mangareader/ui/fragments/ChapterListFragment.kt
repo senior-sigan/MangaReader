@@ -77,9 +77,9 @@ class ChapterListFragment : Fragment() {
         }
 
         App.chaptersRepository.findAll(manga, { list ->
-            if (activity == null) return@findAll
+            if (activity == null || list.isEmpty()) return@findAll
             onUiThread {
-                adapter.insert(list)
+                adapter.update(list)
                 refresh.isRefreshing = false
                 progressBar.visibility = View.GONE
             }

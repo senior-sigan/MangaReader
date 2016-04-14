@@ -62,7 +62,7 @@ class MangaListFragment : Fragment() {
 
     fun renderList() {
         App.mangaSearchController.findAll(App.mangaSourceRepository.currentName, { list ->
-            if (activity == null) return@findAll
+            if (activity == null || list.isEmpty()) return@findAll
             onUiThread {
                 adapter.update(list)
                 refresh.isRefreshing = false

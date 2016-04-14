@@ -5,10 +5,8 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.util.Log
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.R
-import org.seniorsigan.mangareader.TAG
 
 class FilterDialogFragment : DialogFragment() {
     private lateinit var listener: FilterDialogListener

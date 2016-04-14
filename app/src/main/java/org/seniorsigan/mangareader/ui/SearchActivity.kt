@@ -24,7 +24,6 @@ import org.seniorsigan.mangareader.adapters.MangaViewHolder
 
 class SearchActivity : AppCompatActivity() {
     lateinit var searchView: SearchView
-    lateinit var scrim: View
     lateinit var toolbar: Toolbar
     lateinit var listView: RecyclerView
     lateinit var progress: ProgressBar
@@ -36,7 +35,6 @@ class SearchActivity : AppCompatActivity() {
 
         listView = find<RecyclerView>(R.id.rv_manga_list)
         searchView = find<SearchView>(R.id.search_view)
-        scrim = find<View>(R.id.scrim)
         toolbar = find<Toolbar>(R.id.toolbar)
         progress = find<ProgressBar>(R.id.progressBar)
         setSupportActionBar(toolbar)
@@ -86,6 +84,7 @@ class SearchActivity : AppCompatActivity() {
         progress.visibility = View.VISIBLE
         searchView.clearFocus()
         App.mangaSearchController.search(App.mangaSourceRepository.currentName, query, { list ->
+            if (list.isEmpty()) return@search
             onUiThread {
                 progress.visibility = View.GONE
                 adapter.insert(list)

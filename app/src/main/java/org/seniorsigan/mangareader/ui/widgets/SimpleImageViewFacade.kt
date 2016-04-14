@@ -65,6 +65,7 @@ class ZoomableImageViewFacade(context: Context, imageView: View?) : ImageViewFac
             } else {
                 context.onUiThread {
                     try {
+                        view.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP)
                         view.setImage(ImageSource.uri(uri), ImageViewState(0f, PointF(0f, 0f), 0))
                         callback.onSuccess()
                     } catch (e: Exception) {
