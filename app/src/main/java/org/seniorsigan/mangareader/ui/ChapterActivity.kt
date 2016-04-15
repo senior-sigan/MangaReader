@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import okhttp3.HttpUrl
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onUiThread
@@ -15,12 +17,14 @@ import org.seniorsigan.mangareader.adapters.ImagePageAdapter
 
 class ChapterActivity : AppCompatActivity() {
     private lateinit var adapter: ImagePageAdapter
+    private lateinit var progress: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chapter)
 
         val view = find<ViewPager>(R.id.chapter_view)
+        progress = find<ProgressBar>(R.id.chapter_progress)
         adapter = ImagePageAdapter(applicationContext)
         view.adapter = adapter
 
@@ -47,6 +51,7 @@ class ChapterActivity : AppCompatActivity() {
             if (pages.isNotEmpty()) {
                 onUiThread {
                     adapter.update(pages)
+                    progress.visibility = View.GONE
                 }
             } else {
                 startActivity(Intent(this, MainActivity::class.java))

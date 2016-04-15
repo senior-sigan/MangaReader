@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.seniorsigan.mangareader.viewpager.ViewPagerFix
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/chapter_view"
-    android:fitsSystemWindows="false"
-    android:clipToPadding="false"
-    tools:context=".ui.ChapterActivity">
-</org.seniorsigan.mangareader.viewpager.ViewPagerFix>
+    android:layout_width="match_parent">
+
+    <org.seniorsigan.mangareader.viewpager.ViewPagerFix
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/chapter_view"
+        android:fitsSystemWindows="false"
+        android:clipToPadding="false"
+        tools:context=".ui.ChapterActivity">
+    </org.seniorsigan.mangareader.viewpager.ViewPagerFix>
+
+    <ProgressBar
+        android:id="@+id/chapter_progress"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
