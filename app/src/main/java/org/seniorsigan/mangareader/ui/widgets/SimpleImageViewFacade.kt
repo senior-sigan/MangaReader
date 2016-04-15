@@ -2,6 +2,7 @@ package org.seniorsigan.mangareader.ui.widgets
 
 import android.content.Context
 import android.graphics.PointF
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -65,8 +66,24 @@ class ZoomableImageViewFacade(context: Context, imageView: View?) : ImageViewFac
             } else {
                 context.onUiThread {
                     try {
-                        view.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP)
                         view.setImage(ImageSource.uri(uri), ImageViewState(0f, PointF(0f, 0f), 0))
+                        view.setOnImageEventListener(object : SubsamplingScaleImageView.OnImageEventListener {
+                            override fun onImageLoaded() {
+                            }
+
+                            override fun onTileLoadError(p0: Exception?) {
+                            }
+
+                            override fun onImageLoadError(p0: Exception?) {
+                            }
+
+                            override fun onPreviewLoadError(p0: Exception?) {
+                            }
+
+                            override fun onReady() {
+                                view.setScaleAndCenter(view.scaleToWidth(), PointF(0f, 0f))
+                            }
+                        })
                         callback.onSuccess()
                     } catch (e: Exception) {
                         Log.w("Zoom", "UPS $e", e)
@@ -74,5 +91,15 @@ class ZoomableImageViewFacade(context: Context, imageView: View?) : ImageViewFac
                 }
             }
         }
+    }
+}
+
+fun SubsamplingScaleImageView.scaleToWidth(): Float {
+    val hPadding = paddingLeft + paddingRight
+    val vPadding = paddingTop + paddingBottom
+    return if (sWidth > sHeight) {
+        (height - vPadding).toFloat() / sHeight.toFloat()
+    } else {
+        (width - hPadding).toFloat() / sWidth.toFloat()
     }
 }
