@@ -9,7 +9,7 @@ class MangaSearchRepositoryImpl(
         val cache: MangaCacheRepository,
         val network: MangaNetworkRepository
 ): MangaSearchRepository {
-    override fun search(query: String, callback: (List<MangaItem>) -> Unit) {
+    override fun search(query: String, callback: (Response<List<MangaItem>>) -> Unit) {
         async() {
             cache.search(query, { listFromCache ->
                 callback(listFromCache)
@@ -20,25 +20,25 @@ class MangaSearchRepositoryImpl(
         }
     }
 
-    override fun find(url: String, callback: (MangaItem?) -> Unit) {
+    override fun find(url: String, callback: (Response<MangaItem?>) -> Unit) {
         async() {
-            cache.find(url, { cacheManga ->
-                callback(cacheManga)
-                network.find(url, { networkManga ->
-                    callback(networkManga)
-                    cache.update(networkManga)
+            cache.find(url, { cacheRes ->
+                callback(cacheRes)
+                network.find(url, { networkRes ->
+                    callback(networkRes)
+                    cache.update(networkRes.data)
                 })
             })
         }
     }
 
-    override fun findAll(callback: (List<MangaItem>) -> Unit) {
+    override fun findAll(callback: (Response<List<MangaItem>>) -> Unit) {
         async() {
-            cache.findAll { listFromCache ->
-                callback(listFromCache)
-                network.findAll { listFromNetwork ->
-                    callback(listFromNetwork)
-                    cache.updateAll(listFromNetwork)
+            cache.findAll { cacheRes ->
+                callback(cacheRes)
+                network.findAll { networkRes ->
+                    callback(networkRes)
+                    cache.updateAll(networkRes.data)
                 }
             }
         }

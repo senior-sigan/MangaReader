@@ -1,9 +1,13 @@
 package org.seniorsigan.mangareader
 
+import android.app.AlarmManager
 import android.app.Application
+import android.app.PendingIntent
+import android.content.Intent
 import android.util.Log
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import org.jetbrains.anko.alarmManager
 import org.seniorsigan.mangareader.data.*
 import org.seniorsigan.mangareader.data.cache.BookmarksRepository
 import org.seniorsigan.mangareader.data.cache.ChaptersCacheRepository
@@ -12,6 +16,7 @@ import org.seniorsigan.mangareader.data.cache.PagesCacheRepository
 import org.seniorsigan.mangareader.data.network.ChaptersNetworkRepository
 import org.seniorsigan.mangareader.data.network.MangaNetworkRepository
 import org.seniorsigan.mangareader.data.network.PagesNetworkRepository
+import org.seniorsigan.mangareader.receivers.UpdatesReceiver
 import org.seniorsigan.mangareader.usecases.BookmarksManager
 import org.seniorsigan.mangareader.usecases.DigestGenerator
 import org.seniorsigan.mangareader.usecases.TransportWithCache
@@ -19,6 +24,7 @@ import org.seniorsigan.mangareader.usecases.readmanga.MintmangaUrls
 import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaMangaApiConverter
 import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaUrls
 import org.seniorsigan.mangareader.usecases.readmanga.SelfmangaUrls
+import java.util.*
 
 const val TAG = "MangaReader"
 const val INTENT_MANGA = "INTENT_MANGA"
@@ -30,7 +36,7 @@ class App: Application() {
         val mangaSearchController = MangaSearchController()
         lateinit var mangaSourceRepository: MangaSourceRepository
 
-        lateinit var chaptersRepository: ChaptersRepository
+        lateinit var chaptersRepository: ChaptersRepositoryImpl
         lateinit var pagesRepository: PagesRepository
         val digest = DigestGenerator()
         private val gsonBuilder = GsonBuilder()
@@ -90,5 +96,17 @@ class App: Application() {
 
         mangaSourceRepository = MangaSourceRepository(applicationContext, mangaSearchController)
         mangaSourceRepository.setDefault(ReadmangaUrls.name)
+        setupCheckUpdatesAlarm()
+    }
+
+    fun setupCheckUpdatesAlarm() {
+        val intent = Intent(UpdatesReceiver.CHECK_UPDATES)
+        val alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        alarmManager.setInexactRepeating(
+                AlarmManager.ELAPSED_REALTIME,
+                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                AlarmManager.INTERVAL_DAY,
+                alarmIntent)
+        Log.d(TAG, "Setup CheckUpdates alarm clock")
     }
 }

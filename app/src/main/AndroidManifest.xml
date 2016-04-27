@@ -68,6 +68,11 @@
             android:label="@string/title_activity_manga"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.ChaptersActivity" />
+        <receiver android:exported="false" android:name=".receivers.UpdatesReceiver">
+            <intent-filter>
+                <action android:name="org.seniorsigan.mangareader.CHECK_UPDATES" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -83,11 +83,11 @@ class SearchActivity : AppCompatActivity() {
         clearResults()
         progress.visibility = View.VISIBLE
         searchView.clearFocus()
-        App.mangaSearchController.search(App.mangaSourceRepository.currentName, query, { list ->
-            if (list.isEmpty()) return@search
+        App.mangaSearchController.search(App.mangaSourceRepository.currentName, query, { response ->
+            if (response.data.isEmpty()) return@search
             onUiThread {
                 progress.visibility = View.GONE
-                adapter.insert(list)
+                adapter.insert(response.data)
             }
         })
     }

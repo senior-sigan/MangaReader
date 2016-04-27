@@ -10,6 +10,20 @@ class ChaptersRepositoryImpl(
         private val cache: ChaptersCacheRepository,
         private val network: ChaptersNetworkRepository
 ): ChaptersRepository {
+    fun findNew(manga: MangaItem, callback: (List<ChapterItem>) -> Unit) {
+        async() {
+            cache.findAll(manga, { listFromCache ->
+                network.findAll(manga, { listFromNetwork ->
+                    val newChapters = listFromNetwork.filterNot { chapter ->
+                        listFromCache.any { it.url == chapter.url }
+                    }
+                    callback(newChapters)
+                    cache.updateAll(manga, listFromNetwork)
+                })
+            })
+        }
+    }
+
     override fun findAll(manga: MangaItem, callback: (List<ChapterItem>) -> Unit) {
         async() {
             cache.findAll(manga, { listFromCache ->

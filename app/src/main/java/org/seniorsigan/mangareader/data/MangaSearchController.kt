@@ -5,15 +5,15 @@ import org.seniorsigan.mangareader.models.MangaItem
 class MangaSearchController {
     private val engines: MutableMap<String, MangaSearchRepository> = hashMapOf()
 
-    fun search(engineName: String, query: String, callback: (List<MangaItem>) -> Unit) {
+    fun search(engineName: String, query: String, callback: (Response<List<MangaItem>>) -> Unit) {
         engines[engineName]?.search(query, callback)
     }
 
-    fun findAll(engineName: String, callback: (List<MangaItem>) -> Unit) {
+    fun findAll(engineName: String, callback: (Response<List<MangaItem>>) -> Unit) {
         engines[engineName]?.findAll(callback)
     }
 
-    fun find(engineName: String, url: String, callback: (MangaItem?) -> Unit) {
+    fun find(engineName: String, url: String, callback: (Response<MangaItem?>) -> Unit) {
         engines[engineName]?.find(url, callback)
     }
 

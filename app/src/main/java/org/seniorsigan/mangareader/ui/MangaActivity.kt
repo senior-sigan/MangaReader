@@ -42,9 +42,9 @@ class MangaActivity : AppCompatActivity() {
         val mangaIntent = intent.getSerializableExtra(INTENT_MANGA) as MangaItem?
         if (mangaIntent != null) {
             render(mangaIntent)
-            App.mangaSearchController.find(searchEngine, mangaIntent.url, { manga ->
+            App.mangaSearchController.find(searchEngine, mangaIntent.url, { response ->
                 onUiThread {
-                    render(manga)
+                    render(response.data)
                 }
             })
         }

@@ -30,4 +30,8 @@ class BookmarksManager(
             callback(bookmarks.map { it.manga })
         }
     }
+
+    fun findAll(callback: (List<BookmarkItem>) -> Unit) {
+        bookmarksRepository.findAll(callback)
+    }
 }
