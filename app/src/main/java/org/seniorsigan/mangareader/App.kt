@@ -20,6 +20,7 @@ import org.seniorsigan.mangareader.receivers.UpdatesReceiver
 import org.seniorsigan.mangareader.usecases.BookmarksManager
 import org.seniorsigan.mangareader.usecases.DigestGenerator
 import org.seniorsigan.mangareader.usecases.TransportWithCache
+import org.seniorsigan.mangareader.usecases.UpdatesNotificationManager
 import org.seniorsigan.mangareader.usecases.readmanga.MintmangaUrls
 import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaMangaApiConverter
 import org.seniorsigan.mangareader.usecases.readmanga.ReadmangaUrls
@@ -44,6 +45,7 @@ class App: Application() {
         lateinit var transport: TransportWithCache
         lateinit var bookmarkManager: BookmarksManager
         private val readmangaConverter = ReadmangaMangaApiConverter()
+        lateinit var updatesNotification: UpdatesNotificationManager
 
         fun toJson(data: Any?): String {
             return gson.toJson(data)
@@ -61,6 +63,7 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        updatesNotification = UpdatesNotificationManager(this)
         transport = TransportWithCache(applicationContext)
         val bookmarksRepository = BookmarksRepository(applicationContext)
         chaptersRepository = ChaptersRepositoryImpl(ChaptersCacheRepository(applicationContext), ChaptersNetworkRepository(readmangaConverter))

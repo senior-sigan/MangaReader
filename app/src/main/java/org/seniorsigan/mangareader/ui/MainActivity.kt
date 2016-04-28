@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import org.jetbrains.anko.find
+import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.INTENT_MANGA
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.models.MangaItem
@@ -58,6 +59,11 @@ class MainActivity :
         if (savedInstanceState == null) {
             onNavigationItemSelected(navigationView.menu.getItem(0))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        App.updatesNotification.reset()
     }
 
     override fun onBackPressed() {

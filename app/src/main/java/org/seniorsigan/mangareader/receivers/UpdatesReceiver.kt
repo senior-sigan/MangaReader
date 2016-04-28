@@ -9,7 +9,6 @@ import org.jetbrains.anko.async
 import org.jetbrains.anko.connectivityManager
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.TAG
-import org.seniorsigan.mangareader.models.ChapterItem
 
 /**
  * Check whether a new chapter of favorite manga was released.
@@ -33,18 +32,15 @@ class UpdatesReceiver: BroadcastReceiver() {
 
     private fun checkUpdates() {
         Log.d(TAG, "Check updates")
+
         App.bookmarkManager.findAll { bookmarks ->
             bookmarks.forEach { bookmark ->
                 App.chaptersRepository.findNew(bookmark.manga, { chapters ->
-                    sendNotification(chapters)
+                    chapters.forEach { chapter ->
+                        App.updatesNotification.notify(chapter)
+                    }
                 })
             }
         }
-    }
-
-    private fun sendNotification(newChapters: List<ChapterItem>) {
-        if (newChapters.isEmpty()) return
-        Log.d(TAG, "New chapters $newChapters")
-        //TODO: Send notification
     }
 }
