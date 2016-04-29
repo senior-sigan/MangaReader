@@ -17,6 +17,7 @@ import org.seniorsigan.mangareader.INTENT_MANGA
 import org.seniorsigan.mangareader.R
 import org.seniorsigan.mangareader.models.MangaItem
 import org.seniorsigan.mangareader.ui.fragments.BookmarkListFragment
+import org.seniorsigan.mangareader.ui.fragments.FeedListFragment
 import org.seniorsigan.mangareader.ui.fragments.FilterDialogFragment
 import org.seniorsigan.mangareader.ui.fragments.MangaListFragment
 
@@ -100,13 +101,10 @@ class MainActivity :
         val id = item.itemId
 
         val fragmentClass = when (id) {
-            R.id.nav_popular -> {
-                MangaListFragment::class
-            }
-            R.id.nav_bookmarks -> {
-                BookmarkListFragment::class
-            }
+            R.id.nav_popular -> MangaListFragment::class
+            R.id.nav_bookmarks -> BookmarkListFragment::class
             R.id.nav_settings -> MangaListFragment::class
+            R.id.nav_feed -> FeedListFragment::class
             else -> MangaListFragment::class
         }
 

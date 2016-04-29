@@ -11,4 +11,6 @@
     <string name="action_settings">Настройки</string>
     <string name="manga_cover">Обложка манги</string>
     <string name="pick_manga_source">Выберите источник</string>
+    <string name="chapters">Главы</string>
+    <string name="feed">Обновления</string>
 </resources>

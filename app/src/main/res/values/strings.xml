@@ -18,4 +18,6 @@
     <string name="manga_cover">Manga cover</string>
     <string name="pick_manga_source">Pick manga source</string>
     <string name="new_chapter_notification">New chapter</string>
+    <string name="chapters">Chapters</string>
+    <string name="feed">Feed</string>
 </resources>

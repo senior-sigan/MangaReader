@@ -9,6 +9,7 @@ import org.jetbrains.anko.async
 import org.jetbrains.anko.connectivityManager
 import org.seniorsigan.mangareader.App
 import org.seniorsigan.mangareader.TAG
+import org.seniorsigan.mangareader.models.FeedItem
 
 /**
  * Check whether a new chapter of favorite manga was released.
@@ -38,6 +39,7 @@ class UpdatesReceiver: BroadcastReceiver() {
                 App.chaptersRepository.findNew(bookmark.manga, { chapters ->
                     chapters.forEach { chapter ->
                         App.updatesNotification.notify(chapter)
+                        App.feedRepository.save(FeedItem(manga = bookmark.manga, chapter = chapter))
                     }
                 })
             }

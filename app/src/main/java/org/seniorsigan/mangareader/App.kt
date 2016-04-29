@@ -9,11 +9,9 @@ import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import org.jetbrains.anko.alarmManager
 import org.seniorsigan.mangareader.data.*
-import org.seniorsigan.mangareader.data.cache.BookmarksRepository
-import org.seniorsigan.mangareader.data.cache.ChaptersCacheRepository
-import org.seniorsigan.mangareader.data.cache.MangaCacheRepository
-import org.seniorsigan.mangareader.data.cache.PagesCacheRepository
+import org.seniorsigan.mangareader.data.cache.*
 import org.seniorsigan.mangareader.data.network.ChaptersNetworkRepository
+import org.seniorsigan.mangareader.data.network.FeedRepository
 import org.seniorsigan.mangareader.data.network.MangaNetworkRepository
 import org.seniorsigan.mangareader.data.network.PagesNetworkRepository
 import org.seniorsigan.mangareader.receivers.UpdatesReceiver
@@ -39,6 +37,7 @@ class App: Application() {
 
         lateinit var chaptersRepository: ChaptersRepositoryImpl
         lateinit var pagesRepository: PagesRepository
+        lateinit var feedRepository: FeedRepository
         val digest = DigestGenerator()
         private val gsonBuilder = GsonBuilder()
         private val gson = gsonBuilder.create()
@@ -68,6 +67,7 @@ class App: Application() {
         val bookmarksRepository = BookmarksRepository(applicationContext)
         chaptersRepository = ChaptersRepositoryImpl(ChaptersCacheRepository(applicationContext), ChaptersNetworkRepository(readmangaConverter))
         pagesRepository = PagesRepositoryImpl(PagesCacheRepository(applicationContext), PagesNetworkRepository(readmangaConverter))
+        feedRepository = FeedCacheRepository(applicationContext)
         bookmarkManager = BookmarksManager(chaptersRepository, bookmarksRepository)
 
         mangaSearchController.register(
