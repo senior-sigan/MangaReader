@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">MangaReader</string>
     <string name="bookmarks">Закладки</string>
+    <string name="add_bookmark">Добавить в закладки</string>
+    <string name="remove_bookmark">Удалить из закладок</string>
     <string name="filter">Фильтр</string>
     <string name="menu_about">О приложении</string>
     <string name="search">Поиск</string>

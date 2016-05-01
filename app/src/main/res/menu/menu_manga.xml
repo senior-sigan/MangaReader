@@ -3,8 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.seniorsigan.mangareader.ui.MangaActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_add_bookmark"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/add_bookmark"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_remove_bookmark"
+        android:orderInCategory="100"
+        android:title="@string/remove_bookmark"
+        android:visible="false"
         app:showAsAction="never" />
 </menu>

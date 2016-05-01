@@ -53,6 +53,7 @@ class FeedListFragment: Fragment() {
             renderList()
         }
         renderList()
+        App.updatesNotification.reset()
     }
 
     fun renderList() {

@@ -64,7 +64,6 @@ class MainActivity :
 
     override fun onResume() {
         super.onResume()
-        App.updatesNotification.reset()
     }
 
     override fun onBackPressed() {

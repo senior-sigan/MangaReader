@@ -1,6 +1,7 @@
 package org.seniorsigan.mangareader.usecases
 
 import android.util.Log
+import org.seniorsigan.mangareader.TAG
 import org.seniorsigan.mangareader.data.ChaptersRepository
 import org.seniorsigan.mangareader.data.cache.BookmarksRepository
 import org.seniorsigan.mangareader.models.BookmarkItem
