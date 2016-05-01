@@ -9,7 +9,7 @@ class BookmarksRepository(val context: Context) {
 
     fun save(item: BookmarkItem) {
         with(storage.edit(), {
-            putString(item._id, App.toJson(item))
+            putString(item.manga.url, App.toJson(item))
             commit()
         })
     }
@@ -24,7 +24,7 @@ class BookmarksRepository(val context: Context) {
     fun update(item: BookmarkItem) {
         with(storage.edit(), {
             remove(item.manga.url)
-            putString(item._id, App.toJson(item))
+            putString(item.manga.url, App.toJson(item))
             commit()
         })
     }
@@ -36,5 +36,14 @@ class BookmarksRepository(val context: Context) {
                 .filterNotNull()
 
         callback(list)
+    }
+
+    fun find(url: String, callback: (BookmarkItem?) -> Unit) {
+        val data = storage.getString(url, null)
+        if (data == null) {
+            callback(null)
+        } else {
+            callback(App.parseJson(data, BookmarkItem::class.java))
+        }
     }
 }

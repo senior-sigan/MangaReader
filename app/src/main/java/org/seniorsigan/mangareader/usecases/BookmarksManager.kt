@@ -16,6 +16,16 @@ class BookmarksManager(
         loadChapters(bookmark)
     }
 
+    fun saveOrRemove(manga: MangaItem) {
+        bookmarksRepository.find(manga.url, { bookmark ->
+            if (bookmark != null) {
+                bookmarksRepository.remove(bookmark)
+            } else {
+                save(manga)
+            }
+        })
+    }
+
     fun loadChapters(bookmark: BookmarkItem) {
         chaptersRepository.findAll(bookmark.manga, { chapters ->
             val newBookmark = BookmarkItem(bookmark.manga, chapters)
@@ -33,5 +43,9 @@ class BookmarksManager(
 
     fun findAll(callback: (List<BookmarkItem>) -> Unit) {
         bookmarksRepository.findAll(callback)
+    }
+
+    fun find(manga: MangaItem, callback: (BookmarkItem?) -> Unit) {
+        bookmarksRepository.find(manga.url, callback)
     }
 }

@@ -20,13 +20,6 @@
             android:id="@+id/manga_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btn_manga_chapters"
-            android:text="@string/chapters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

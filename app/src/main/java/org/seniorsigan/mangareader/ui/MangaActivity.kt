@@ -1,6 +1,7 @@
 package org.seniorsigan.mangareader.ui
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.FloatingActionButton
@@ -56,6 +57,7 @@ class MangaActivity : AppCompatActivity() {
         supportActionBar?.title = manga.title
         collapsingToolbar.title = manga.title
         coverView.load(manga.coverURL)
+        renderFab(manga)
         button.onClick {
             startActivity(with(Intent(this, ChaptersActivity::class.java), {
                 putExtra(INTENT_MANGA, manga)
@@ -63,8 +65,18 @@ class MangaActivity : AppCompatActivity() {
             }))
         }
         fab.onClick { view ->
-            App.bookmarkManager.save(manga)
-            Snackbar.make(view!!, "${manga.title} saved in bookmarks", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            App.bookmarkManager.saveOrRemove(manga)
+            renderFab(manga)
         }
+    }
+
+    fun renderFab(manga: MangaItem) {
+        App.bookmarkManager.find(manga, { bookmark ->
+            if (bookmark == null) {
+                fab.setImageResource(R.drawable.ic_star_border_white_24dp)
+            } else {
+                fab.setImageResource(R.drawable.ic_star_white_24dp)
+            }
+        })
     }
 }

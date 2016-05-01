@@ -49,8 +49,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_star_white_24dp"
+        android:src="@drawable/ic_star_border_white_24dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />
+
+    <Button
+        android:id="@+id/btn_manga_chapters"
+        android:text="@string/chapters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:layout_gravity="center_horizontal|bottom" />
 
 </android.support.design.widget.CoordinatorLayout>
