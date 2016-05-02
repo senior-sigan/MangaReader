@@ -2,7 +2,6 @@ package org.seniorsigan.mangareader.ui.widgets
 
 import android.content.Context
 import android.graphics.PointF
-import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.ImageView

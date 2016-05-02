@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/feed_item_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/chapter_item_height"
         tools:text="Super duper chapter!" />
 </LinearLayout>

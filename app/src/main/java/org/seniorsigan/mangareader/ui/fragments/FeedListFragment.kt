@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,11 +37,13 @@ class FeedListFragment: Fragment() {
             progressBar = find<ProgressBar>(R.id.progressBar)
         })
 
-        listView.layoutManager = GridLayoutManager(context, 2)
+        listView.layoutManager = LinearLayoutManager(context)
         adapter.onItemClickListener = { feedItem ->
             startActivity(with(Intent(context, ChapterActivity::class.java), {
                 putExtra(android.content.Intent.EXTRA_TEXT, feedItem.chapter.url)
             }))
+            App.updatesNotification.markRead(feedItem.chapter)
+            App.feedRepository.markRead(feedItem)
         }
         listView.adapter = adapter
 
@@ -53,7 +56,6 @@ class FeedListFragment: Fragment() {
             renderList()
         }
         renderList()
-        App.updatesNotification.reset()
     }
 
     fun renderList() {

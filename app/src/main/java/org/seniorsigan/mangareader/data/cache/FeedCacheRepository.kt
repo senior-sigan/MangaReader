@@ -9,6 +9,10 @@ import org.seniorsigan.mangareader.models.FeedItem
 class FeedCacheRepository(
         private val context: Context
 ): FeedRepository {
+    override fun markRead(item: FeedItem) {
+        save(item.copy(isRead = true))
+    }
+
     val storage = context.getSharedPreferences("ChaptersFeed", 0)
 
     override fun findAll(callback: (Response<List<FeedItem>>) -> Unit) {
@@ -29,7 +33,13 @@ class FeedCacheRepository(
     override fun save(item: FeedItem) {
         synchronized(this, { // because of getting storage.all.size
             with(storage.edit(), {
-                putString(item.chapter.url, App.toJson(item.copy(_id = storage.all.size)))
+                val json = App.toJson(
+                    if (item._id == 0) {
+                        item.copy(_id = storage.all.size)
+                    } else {
+                        item
+                    })
+                putString(item.chapter.url, json)
                 commit()
             })
         })

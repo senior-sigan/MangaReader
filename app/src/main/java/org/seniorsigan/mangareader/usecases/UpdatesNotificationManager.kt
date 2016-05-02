@@ -35,6 +35,13 @@ class UpdatesNotificationManager(private val context: Context) {
         })
     }
 
+    fun markRead(chapter: ChapterItem) {
+        synchronized(this, {
+            newChapters.remove(chapter)
+            if (newChapters.isEmpty()) reset()
+        })
+    }
+
     private fun builder(): NotificationCompat.Builder {
         return synchronized(this, {
             if (builder == null) {

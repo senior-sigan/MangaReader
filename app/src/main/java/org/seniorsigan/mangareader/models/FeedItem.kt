@@ -6,5 +6,6 @@ data class FeedItem(
         override val _id: Int = 0,
         val manga: MangaItem,
         val chapter: ChapterItem,
-        val date: Date = Date()
+        val date: Date = Date(),
+        val isRead: Boolean = false
 ): BaseItem
