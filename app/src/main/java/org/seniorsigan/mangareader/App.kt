@@ -5,7 +5,9 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Intent
 import android.util.Log
+import com.crashlytics.android.Crashlytics
 import com.google.gson.GsonBuilder
+import io.fabric.sdk.android.Fabric
 import okhttp3.OkHttpClient
 import org.jetbrains.anko.alarmManager
 import org.seniorsigan.mangareader.data.*
@@ -62,6 +64,7 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Fabric.with(this, Crashlytics())
         updatesNotification = UpdatesNotificationManager(this)
         transport = TransportWithCache(applicationContext)
         val bookmarksRepository = BookmarksRepository(applicationContext)

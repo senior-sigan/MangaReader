@@ -73,6 +73,9 @@
                 <action android:name="org.seniorsigan.mangareader.CHECK_UPDATES" />
             </intent-filter>
         </receiver>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="5c0078c998813d3317096486c1ae180fd73bae5e" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'io.fabric'
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitTag = 'git describe --tags'.execute([], project.rootDir).text.trim()
@@ -66,6 +67,10 @@ dependencies {
     compile "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.google.code.gson:gson:2.6.2'
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
 }
 
 if (project.hasProperty('storeFile')) {
